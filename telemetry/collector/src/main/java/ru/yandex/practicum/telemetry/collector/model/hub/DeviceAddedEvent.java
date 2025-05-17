@@ -10,6 +10,7 @@ public class DeviceAddedEvent extends HubEvent {
     private String id;
     @NotNull
     private DeviceType deviceType;
+    @NotNull
     private HubEventType type;
 
 
