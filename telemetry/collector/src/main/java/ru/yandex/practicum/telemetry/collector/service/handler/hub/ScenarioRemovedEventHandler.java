@@ -5,12 +5,14 @@ import ru.yandex.practicum.kafka.telemetry.event.ScenarioRemovedEventAvro;
 import ru.yandex.practicum.telemetry.collector.model.hub.HubEvent;
 import ru.yandex.practicum.telemetry.collector.model.hub.HubEventType;
 import ru.yandex.practicum.telemetry.collector.model.hub.ScenarioRemovedEvent;
+import ru.yandex.practicum.telemetry.collector.service.handler.mappers.EventMapper;
 import ru.yandex.practicum.telemetry.collector.service.kafka.KafkaEventProducer;
 
 @Component
 public class ScenarioRemovedEventHandler extends BaseHubEventHandler {
-    public ScenarioRemovedEventHandler(KafkaEventProducer producer) {
-        super(producer);
+
+    public ScenarioRemovedEventHandler(KafkaEventProducer producer, EventMapper mapper) {
+        super(producer, mapper);
     }
 
     @Override

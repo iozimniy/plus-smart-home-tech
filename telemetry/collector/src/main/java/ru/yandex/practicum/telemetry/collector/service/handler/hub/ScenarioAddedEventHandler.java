@@ -8,6 +8,7 @@ import ru.yandex.practicum.telemetry.collector.model.hub.HubEvent;
 import ru.yandex.practicum.telemetry.collector.model.hub.HubEventType;
 import ru.yandex.practicum.telemetry.collector.model.hub.ScenarioAddedEvent;
 import ru.yandex.practicum.telemetry.collector.service.handler.mappers.DeviceActionMapper;
+import ru.yandex.practicum.telemetry.collector.service.handler.mappers.EventMapper;
 import ru.yandex.practicum.telemetry.collector.service.handler.mappers.ScenarioConditionMapper;
 import ru.yandex.practicum.telemetry.collector.service.kafka.KafkaEventProducer;
 
@@ -15,8 +16,9 @@ import java.util.List;
 
 @Component
 public class ScenarioAddedEventHandler extends BaseHubEventHandler {
-    public ScenarioAddedEventHandler(KafkaEventProducer producer) {
-        super(producer);
+
+    public ScenarioAddedEventHandler(KafkaEventProducer producer, EventMapper mapper) {
+        super(producer, mapper);
     }
 
     @Override

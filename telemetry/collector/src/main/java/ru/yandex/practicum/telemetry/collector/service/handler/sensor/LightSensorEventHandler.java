@@ -5,12 +5,14 @@ import ru.yandex.practicum.kafka.telemetry.event.LightSensorAvro;
 import ru.yandex.practicum.telemetry.collector.model.sensor.LightSensorEvent;
 import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEvent;
 import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEventType;
+import ru.yandex.practicum.telemetry.collector.service.handler.mappers.EventMapper;
 import ru.yandex.practicum.telemetry.collector.service.kafka.KafkaEventProducer;
 
 @Component
 public class LightSensorEventHandler extends BaseSensorEventHandler {
-    public LightSensorEventHandler(KafkaEventProducer producer) {
-        super(producer);
+
+    public LightSensorEventHandler(KafkaEventProducer producer, EventMapper mapper) {
+        super(producer, mapper);
     }
 
     @Override

@@ -5,12 +5,14 @@ import ru.yandex.practicum.kafka.telemetry.event.TemperatureSensorAvro;
 import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEvent;
 import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEventType;
 import ru.yandex.practicum.telemetry.collector.model.sensor.TemperatureSensorEvent;
+import ru.yandex.practicum.telemetry.collector.service.handler.mappers.EventMapper;
 import ru.yandex.practicum.telemetry.collector.service.kafka.KafkaEventProducer;
 
 @Component
 public class TemperatureSensorEventHandler extends BaseSensorEventHandler {
-    public TemperatureSensorEventHandler(KafkaEventProducer producer) {
-        super(producer);
+
+    public TemperatureSensorEventHandler(KafkaEventProducer producer, EventMapper mapper) {
+        super(producer, mapper);
     }
 
     @Override

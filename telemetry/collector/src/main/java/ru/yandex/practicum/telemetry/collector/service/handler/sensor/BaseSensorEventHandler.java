@@ -13,7 +13,7 @@ import static ru.yandex.practicum.telemetry.collector.service.kafka.EventTopics.
 public abstract class BaseSensorEventHandler<T extends SpecificRecordBase> implements SensorEventHandler {
 
     private final KafkaEventProducer producer;
-    private EventMapper mapper;
+    private final EventMapper mapper;
 
     @Override
     public void handle(SensorEvent event) {
