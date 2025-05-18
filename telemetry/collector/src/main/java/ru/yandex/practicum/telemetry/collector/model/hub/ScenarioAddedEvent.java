@@ -1,11 +1,8 @@
 package ru.yandex.practicum.telemetry.collector.model.hub;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
-import org.hibernate.validator.constraints.Length;
 import ru.yandex.practicum.telemetry.collector.model.hub.scenario.DeviceAction;
 import ru.yandex.practicum.telemetry.collector.model.hub.scenario.ScenarioCondition;
 
