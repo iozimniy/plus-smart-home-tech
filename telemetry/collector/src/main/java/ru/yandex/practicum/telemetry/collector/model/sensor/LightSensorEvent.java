@@ -1,5 +1,8 @@
 package ru.yandex.practicum.telemetry.collector.model.sensor;
 
+import lombok.Getter;
+
+@Getter
 public class LightSensorEvent extends SensorEvent {
 
     private int linkQuality;

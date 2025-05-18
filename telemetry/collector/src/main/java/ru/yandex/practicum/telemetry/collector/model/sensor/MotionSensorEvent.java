@@ -1,7 +1,9 @@
 package ru.yandex.practicum.telemetry.collector.model.sensor;
 
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
 
+@Getter
 public class MotionSensorEvent extends SensorEvent {
 
     @NotNull
