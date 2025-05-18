@@ -6,9 +6,14 @@ import ru.yandex.practicum.kafka.telemetry.event.DeviceTypeAvro;
 import ru.yandex.practicum.telemetry.collector.model.hub.DeviceAddedEvent;
 import ru.yandex.practicum.telemetry.collector.model.hub.HubEvent;
 import ru.yandex.practicum.telemetry.collector.model.hub.HubEventType;
+import ru.yandex.practicum.telemetry.collector.service.kafka.KafkaEventProducer;
 
 @Component
 public class DeviceAddedEventHandler extends BaseHubEventHandler {
+    public DeviceAddedEventHandler(KafkaEventProducer producer) {
+        super(producer);
+    }
+
     @Override
     public HubEventType getMessageType() {
         return HubEventType.DEVICE_ADDED;
