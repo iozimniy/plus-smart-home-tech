@@ -16,7 +16,6 @@ public class ScenarioAddedEvent extends HubEvent {
     @Min(value = 3)
     private String name;
     private List<ScenarioCondition> conditions;
-    @NotNull
     private List<DeviceAction> actions;
 
     @Override
