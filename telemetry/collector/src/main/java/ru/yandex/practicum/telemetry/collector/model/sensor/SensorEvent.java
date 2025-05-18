@@ -9,6 +9,7 @@ import lombok.ToString;
 import ru.yandex.practicum.telemetry.collector.model.hub.HubEventType;
 
 import java.time.Instant;
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,
         include = JsonTypeInfo.As.EXISTING_PROPERTY,

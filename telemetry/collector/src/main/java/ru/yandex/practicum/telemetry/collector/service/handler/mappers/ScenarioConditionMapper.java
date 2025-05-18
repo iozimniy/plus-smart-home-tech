@@ -6,8 +6,6 @@ import ru.yandex.practicum.kafka.telemetry.event.ConditionTypeAvro;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioConditionAvro;
 import ru.yandex.practicum.telemetry.collector.model.hub.scenario.ScenarioCondition;
 
-import java.util.List;
-
 @Component
 public class ScenarioConditionMapper {
 

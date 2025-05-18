@@ -10,7 +10,7 @@ import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEvent;
 @Component
 public class EventMapper<T extends SpecificRecordBase> {
 
-    public HubEventAvro mapHubEventToAvro (HubEvent event, T payload) {
+    public HubEventAvro mapHubEventToAvro(HubEvent event, T payload) {
 
         return HubEventAvro.newBuilder()
                 .setHubId(event.getHubId())

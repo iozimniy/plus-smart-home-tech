@@ -4,7 +4,6 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
-import ru.yandex.practicum.telemetry.collector.model.hub.constants.ActionType;
 import ru.yandex.practicum.telemetry.collector.model.hub.scenario.DeviceAction;
 import ru.yandex.practicum.telemetry.collector.model.hub.scenario.ScenarioCondition;
 

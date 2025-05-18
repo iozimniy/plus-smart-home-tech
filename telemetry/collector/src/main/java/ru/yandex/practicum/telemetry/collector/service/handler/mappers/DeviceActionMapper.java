@@ -8,7 +8,7 @@ import ru.yandex.practicum.telemetry.collector.model.hub.scenario.DeviceAction;
 @Component
 public class DeviceActionMapper {
 
-    public static DeviceActionAvro mapToAvro (DeviceAction deviceAction) {
+    public static DeviceActionAvro mapToAvro(DeviceAction deviceAction) {
 
         ActionTypeAvro actionTypeAvro = ActionTypeAvro.valueOf(deviceAction.getType().name());
 

@@ -1,6 +1,5 @@
 package ru.yandex.practicum.telemetry.collector.service.handler.sensor;
 
-import org.apache.avro.specific.SpecificRecordBase;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.kafka.telemetry.event.MotionSensorAvro;
 import ru.yandex.practicum.telemetry.collector.model.sensor.MotionSensorEvent;

@@ -10,7 +10,7 @@ import ru.yandex.practicum.telemetry.collector.service.kafka.KafkaEventProducer;
 import static ru.yandex.practicum.telemetry.collector.service.kafka.EventTopics.HUBS_EVENTS_TOPIC;
 
 @RequiredArgsConstructor
-public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implements HubEventHandler{
+public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implements HubEventHandler {
 
     private final KafkaEventProducer producer;
     private EventMapper mapper;
