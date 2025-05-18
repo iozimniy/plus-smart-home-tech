@@ -12,9 +12,6 @@ public class TemperatureSensorEvent extends SensorEvent {
     @NotNull
     private int temperatureF;
 
-    @NotNull
-    private SensorEventType type;
-
     @Override
     public SensorEventType getType() {
         return SensorEventType.TEMPERATURE_SENSOR_EVENT;

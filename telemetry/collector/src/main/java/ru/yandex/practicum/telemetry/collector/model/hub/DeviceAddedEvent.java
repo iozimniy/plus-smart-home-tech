@@ -10,11 +10,8 @@ public class DeviceAddedEvent extends HubEvent {
     @NotBlank
     @NotNull
     private String id;
-
     @NotNull
     private DeviceType deviceType;
-
-    private HubEventType type;
 
     @Override
     public HubEventType getType() {

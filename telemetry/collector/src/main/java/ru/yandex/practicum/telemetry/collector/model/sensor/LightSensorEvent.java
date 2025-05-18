@@ -9,7 +9,6 @@ public class LightSensorEvent extends SensorEvent {
 
     private int luminosity;
 
-    private SensorEventType type;
 
     @Override
     public SensorEventType getType() {

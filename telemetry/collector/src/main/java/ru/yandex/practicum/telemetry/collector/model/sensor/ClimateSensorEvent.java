@@ -15,9 +15,6 @@ public class ClimateSensorEvent extends SensorEvent {
     @NotNull
     private int co2Level;
 
-    @NotNull
-    private SensorEventType type;
-
     @Override
     public SensorEventType getType() {
         return SensorEventType.CLIMATE_SENSOR_EVENT;

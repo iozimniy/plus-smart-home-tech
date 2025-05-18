@@ -9,8 +9,6 @@ public class DeviceRemovedEvent extends HubEvent {
     @NotBlank
     @NotNull
     private String id;
-    @NotNull
-    private HubEventType type;
 
     @Override
     public HubEventType getType() {

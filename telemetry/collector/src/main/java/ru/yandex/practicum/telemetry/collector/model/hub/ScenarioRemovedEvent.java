@@ -12,8 +12,6 @@ public class ScenarioRemovedEvent extends HubEvent {
     @Max(value = 2147483647)
     @NotNull
     private String name;
-    @NotNull
-    private HubEventType type;
 
     @Override
     public HubEventType getType() {

@@ -9,9 +9,6 @@ public class SwitchSensorEvent extends SensorEvent {
     @NotNull
     private boolean state;
 
-    @NotNull
-    private SensorEventType type;
-
     @Override
     public SensorEventType getType() {
         return SensorEventType.SWITCH_SENSOR_EVENT;
