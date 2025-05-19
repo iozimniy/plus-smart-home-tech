@@ -7,47 +7,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.yandex.practicum.telemetry.collector.model.hub.HubEvent;
-import ru.yandex.practicum.telemetry.collector.model.hub.HubEventType;
 import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEvent;
-import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEventType;
-import ru.yandex.practicum.telemetry.collector.service.handler.hub.HubEventHandler;
-import ru.yandex.practicum.telemetry.collector.service.handler.sensor.SensorEventHandler;
-
-import java.util.List;
-import java.util.Map;
-import java.util.function.Function;
-import java.util.stream.Collectors;
+import ru.yandex.practicum.telemetry.collector.service.resolvers.HubEventResolver;
+import ru.yandex.practicum.telemetry.collector.service.resolvers.SensorEventResolver;
 
 @RestController
 @RequestMapping(path = "/events")
 @Validated
 public class EventController {
 
-    private final Map<HubEventType, HubEventHandler> hubEventHandlers;
-    private final Map<SensorEventType, SensorEventHandler> sensorEventHandlers;
+    private final HubEventResolver hubEventResolver;
+    private final SensorEventResolver sensorEventResolver;
 
-    public EventController(List<HubEventHandler> hubEventHandlers, List<SensorEventHandler> sensorEventHandlers) {
-        this.hubEventHandlers = hubEventHandlers.stream()
-                .collect(Collectors.toMap(HubEventHandler::getMessageType, Function.identity()));
-        this.sensorEventHandlers = sensorEventHandlers.stream()
-                .collect(Collectors.toMap(SensorEventHandler::getMessageType, Function.identity()));
+    public EventController(HubEventResolver hubEventResolver, SensorEventResolver sensorEventResolver) {
+        this.hubEventResolver = hubEventResolver;
+        this.sensorEventResolver = sensorEventResolver;
     }
 
     @PostMapping("/hubs")
     public void collectHubEvent(@Valid @RequestBody HubEvent request) {
-        if (hubEventHandlers.containsKey(request.getType())) {
-            hubEventHandlers.get(request.getType()).handle(request);
-        } else {
-            throw new IllegalArgumentException("Не найден обработчик для hub-события типа " + request.getType());
-        }
+        hubEventResolver.getHandler(request.getType()).handle(request);
     }
 
     @PostMapping("/sensors")
     public void collectSensorEvent(@Valid @RequestBody SensorEvent request) {
-        if (sensorEventHandlers.containsKey(request.getType())) {
-            sensorEventHandlers.get(request.getType()).handle(request);
-        } else {
-            throw new IllegalArgumentException("Не найден обработчик для sensor-события типа " + request.getType());
-        }
+        sensorEventResolver.getHandler(request.getType()).handle(request);
     }
 }
