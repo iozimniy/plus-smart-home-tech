@@ -1,6 +1,7 @@
 package ru.yandex.practicum.telemetry.collector.service.handler.hub;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.telemetry.collector.model.hub.HubEvent;
@@ -10,6 +11,7 @@ import ru.yandex.practicum.telemetry.collector.service.kafka.KafkaEventProducer;
 import static ru.yandex.practicum.telemetry.collector.service.kafka.EventTopics.HUBS_EVENTS_TOPIC;
 
 @RequiredArgsConstructor
+@Slf4j
 public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implements HubEventHandler {
 
     private final KafkaEventProducer producer;
@@ -17,9 +19,17 @@ public abstract class BaseHubEventHandler<T extends SpecificRecordBase> implemen
 
     @Override
     public void handle(HubEvent event) {
+        log.info("Processing HubEvent {}: hubId={}, timestamp={}", event.getType(),
+                event.getHubId(), event.getTimestamp());
+        log.debug("HubEvent {}: {}", event.getType(), event);
+
         T payload = mapToAvro(event);
         HubEventAvro hubEventAvro = mapper.mapHubEventToAvro(event, payload);
         producer.send(HUBS_EVENTS_TOPIC, hubEventAvro);
+
+        log.info("Sending HubEvent {} hubId={}, timestamp={} to topic {}", event.getType(), event.getHubId(),
+                event.getTimestamp(), HUBS_EVENTS_TOPIC);
+        log.debug("HubEvent {} for topic {}", event, HUBS_EVENTS_TOPIC);
     }
 
     protected abstract T mapToAvro(HubEvent event);

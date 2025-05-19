@@ -4,3 +4,7 @@ spring:
 server:
   port: 8080
 
+logging:
+  level:
+    ru.yandex.practicum.telemetry: INFO
+
