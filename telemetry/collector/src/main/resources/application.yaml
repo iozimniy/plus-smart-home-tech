@@ -1,8 +1,9 @@
 spring:
   application:
     name: collector
-server:
-  port: 8080
+grpc:
+  server:
+    port: 9090
 
 logging:
   level:
