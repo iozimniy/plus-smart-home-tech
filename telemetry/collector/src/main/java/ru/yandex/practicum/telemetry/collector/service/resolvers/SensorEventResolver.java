@@ -1,6 +1,7 @@
 package ru.yandex.practicum.telemetry.collector.service.resolvers;
 
 import org.springframework.stereotype.Service;
+import ru.yandex.practicum.grpc.telemetry.event.SensorEventProto;
 import ru.yandex.practicum.telemetry.collector.model.sensor.SensorEventType;
 import ru.yandex.practicum.telemetry.collector.service.handler.sensor.SensorEventHandler;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class SensorEventResolver {
-    private final Map<SensorEventType, SensorEventHandler> sensorEventHandlers;
+    private final Map<SensorEventProto.PayloadCase, SensorEventHandler> sensorEventHandlers;
 
     public SensorEventResolver(List<SensorEventHandler> sensorEventHandlersList) {
         this.sensorEventHandlers = sensorEventHandlersList.stream()
