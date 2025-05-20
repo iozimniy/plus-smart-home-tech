@@ -19,7 +19,7 @@ public class SensorEventResolver {
                 .collect(Collectors.toMap(SensorEventHandler::getMessageType, Function.identity()));
     }
 
-    public SensorEventHandler getHandler(SensorEventType type) {
+    public SensorEventHandler getHandler(SensorEventProto.PayloadCase type) {
         if (!sensorEventHandlers.containsKey(type)) {
             throw new IllegalArgumentException("Не найден обработчик для hub-события типа " + type);
         }

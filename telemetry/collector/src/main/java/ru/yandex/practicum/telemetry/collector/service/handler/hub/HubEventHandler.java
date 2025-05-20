@@ -7,5 +7,5 @@ import ru.yandex.practicum.telemetry.collector.model.hub.HubEventType;
 public interface HubEventHandler {
     HubEventProto.PayloadCase getMessageType();
 
-    void handle(HubEvent event);
+    void handle(HubEventProto event);
 }

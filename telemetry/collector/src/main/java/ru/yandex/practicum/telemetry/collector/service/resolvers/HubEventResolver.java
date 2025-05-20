@@ -19,7 +19,7 @@ public class HubEventResolver {
                 .collect(Collectors.toMap(HubEventHandler::getMessageType, Function.identity()));;
     }
 
-    public HubEventHandler getHandler(HubEventType type) {
+    public HubEventHandler getHandler(HubEventProto.PayloadCase type) {
         if (!hubEventHandlers.containsKey(type)) {
             throw new IllegalArgumentException("Не найден обработчик для hub-события типа " + type);
         }
