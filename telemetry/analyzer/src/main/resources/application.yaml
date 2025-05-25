@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: analyzer
+
+server:
+  port: 8082
+
+logging:
+  level:
+    ru.yandex.practicum.telemetry: TRACE
+
+
+analyzer:
+  kafka:
+    hub-consumer:
+      properties:
+        bootstrap.servers: localhost:9092
+        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value.deserializer: ru.yandex.practicum.kafka.serializer.HubEventDeserializer
+        group.id: hub-group
+    snapshot-consumer:
+      properties:
+        bootstrap.servers: localhost:9092
+        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value.deserializer: ru.yandex.practicum.kafka.serializer.SnapshotDeserializer
+        group.id: snapshot-group
+
