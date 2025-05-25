@@ -3,10 +3,7 @@ package service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.kafka.telemetry.event.DeviceAddedEventAvro;
-import ru.yandex.practicum.kafka.telemetry.event.DeviceRemovedEventAvro;
-import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
-import ru.yandex.practicum.kafka.telemetry.event.ScenarioAddedEventAvro;
+import ru.yandex.practicum.kafka.telemetry.event.*;
 import service.hub.DeviceService;
 import service.hub.ScenarioService;
 
@@ -26,6 +23,9 @@ public class EntryService {
             deviceService.removeDevice(hubEventAvro.getHubId(), (DeviceRemovedEventAvro) hubEventAvro.getPayload());
         } else if (hubEventAvro.getPayload() instanceof ScenarioAddedEventAvro) {
             scenarioService.addScenario(hubEventAvro.getHubId(), (ScenarioAddedEventAvro) hubEventAvro.getPayload());
+        } else if (hubEventAvro.getPayload() instanceof ScenarioRemovedEventAvro) {
+            scenarioService.removeScenario(hubEventAvro.getHubId(),
+                    (ScenarioRemovedEventAvro) hubEventAvro.getPayload());
         }
     }
 }

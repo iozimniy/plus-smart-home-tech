@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import repository.ScenarioRepository;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioAddedEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioConditionAvro;
+import ru.yandex.practicum.kafka.telemetry.event.ScenarioRemovedEventAvro;
+import service.exceptions.NotFoundException;
 
 import java.util.ArrayList;
 
@@ -37,5 +39,13 @@ public class ScenarioService {
 
         scenarioRepository.save(scenario);
         log.info("Added scenario with name {}", scenario.getName());
+    }
+
+    @SneakyThrows
+    public void removeScenario(String hubId, ScenarioRemovedEventAvro payload) {
+        Scenario scenario = scenarioRepository.findByHubIdAndName(hubId, payload.getName())
+                .orElseThrow(() -> new NotFoundException ("Not found scenario with hubId " + hubId
+                        + " and name " + payload.getName()));
+        scenarioRepository.delete(scenario);
     }
 }
