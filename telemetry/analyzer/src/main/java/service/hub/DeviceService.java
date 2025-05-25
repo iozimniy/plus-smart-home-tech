@@ -19,7 +19,7 @@ public class DeviceService {
 
     public void addDevice(String hubId, DeviceAddedEventAvro payload) {
         Sensor newSensor = Sensor.builder()
-                .id(Long.parseLong(payload.getId()))
+                .id(payload.getId())
                 .hubId(hubId)
                 .build();
         sensorRepository.save(newSensor);
