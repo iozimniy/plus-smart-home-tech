@@ -2,7 +2,9 @@ package ru.yandex.practicum.telemetry.aggregator.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.kafka.telemetry.event.*;
+import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
+import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
+import ru.yandex.practicum.kafka.telemetry.event.SensorStateAvro;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -55,8 +57,12 @@ public class AggregatorState {
 
     private Optional<SensorsSnapshotAvro> addNewData(SensorsSnapshotAvro snapshot,
                                                      SensorEventAvro sensorEvent) {
-        SensorStateAvro sensorStateAvro = createNewState(sensorEvent);
-        snapshot.getSensorsState().put(sensorEvent.getId(), sensorStateAvro);
+        var sensorState = snapshot.getSensorsState();
+        sensorState.put(sensorEvent.getId(), createNewState(sensorEvent));
+        snapshot.setSensorsState(sensorState);
+
+        log.info("Add new sensor {} type {} for hub {}", sensorEvent.getId(), sensorEvent.getPayload().getClass(),
+                sensorEvent.getHubId());
         return Optional.of(snapshot);
     }
 
