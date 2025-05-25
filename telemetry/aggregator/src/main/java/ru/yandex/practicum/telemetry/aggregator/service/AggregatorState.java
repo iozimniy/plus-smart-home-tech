@@ -70,8 +70,7 @@ public class AggregatorState {
                                                          SensorEventAvro sensorEvent) {
         SensorStateAvro oldState = snapshot.getSensorsState().get(sensorEvent.getId());
 
-        if (oldState.getTimestamp().isAfter(sensorEvent.getTimestamp()) ||
-        oldState.getTimestamp().equals(sensorEvent.getTimestamp())) {
+        if (oldState.getTimestamp().isAfter(sensorEvent.getTimestamp())) {
             log.debug("Not a new state of sensor {}, hub {}", sensorEvent.getId(), sensorEvent.getHubId());
             log.trace("OLD TIME: {}, NEW TIME: {}", oldState.getTimestamp(), sensorEvent.getTimestamp());
             return Optional.empty();
