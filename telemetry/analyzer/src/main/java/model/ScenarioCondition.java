@@ -17,16 +17,16 @@ public class ScenarioCondition {
 
     @ManyToOne
     @JoinColumn(name = "scenario_id")
-    @MapsId
+    @MapsId("scenarioId")
     private Scenario scenario;
 
     @JoinColumn(name = "sensor_id")
-    @MapsId
+    @MapsId("sensorId")
     @ManyToOne
     private Sensor sensor;
 
     @ManyToOne
     @JoinColumn(name = "condition_id")
-    @MapsId
+    @MapsId("conditionId")
     private Condition condition;
 }

@@ -1,10 +1,12 @@
 package model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import ru.yandex.practicum.kafka.telemetry.event.ActionTypeAvro;
 
+@Builder
 @Getter
 @Setter
 @Entity

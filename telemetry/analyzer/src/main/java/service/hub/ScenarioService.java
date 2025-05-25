@@ -20,6 +20,7 @@ public class ScenarioService {
 
     private final ScenarioRepository scenarioRepository;
     private final ScenarioConditionMapper scenarioConditionMapper;
+    private final ScenarioActionMapper scenarioActionMapper;
 
     @SneakyThrows
     public void addScenario(String hubId, ScenarioAddedEventAvro payload) {
@@ -32,5 +33,9 @@ public class ScenarioService {
         Scenario scenario = scenarioRepository.save(newScenario);
 
         scenario.setConditionList(scenarioConditionMapper.mapToModel(payload, scenario, hubId));
+        scenario.setActionList(scenarioActionMapper.mapToModel(payload, scenario, hubId));
+
+        scenarioRepository.save(scenario);
+        log.info("Added scenario with name {}", scenario.getName());
     }
 }
