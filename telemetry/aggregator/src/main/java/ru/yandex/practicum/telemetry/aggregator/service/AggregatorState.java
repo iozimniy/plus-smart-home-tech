@@ -2,9 +2,7 @@ package ru.yandex.practicum.telemetry.aggregator.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
-import ru.yandex.practicum.kafka.telemetry.event.SensorStateAvro;
-import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
+import ru.yandex.practicum.kafka.telemetry.event.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -48,6 +46,8 @@ public class AggregatorState {
                 .setSensorsState(state)
                 .build();
 
+        log.trace("NEW SNAPSHOT: {}", snapshot);
+
         snapshots.put(snapshot.getHubId(), snapshot);
 
         return Optional.of(snapshot);
@@ -64,14 +64,16 @@ public class AggregatorState {
                                                          SensorEventAvro sensorEvent) {
         SensorStateAvro oldState = snapshot.getSensorsState().get(sensorEvent.getId());
 
-        if ((oldState.getTimestamp().isAfter(sensorEvent.getTimestamp()) ||
-        oldState.getTimestamp().equals(sensorEvent.getTimestamp()))) {
+        if (oldState.getTimestamp().isAfter(sensorEvent.getTimestamp()) ||
+        oldState.getTimestamp().equals(sensorEvent.getTimestamp())) {
             log.debug("Not a new state of sensor {}, hub {}", sensorEvent.getId(), sensorEvent.getHubId());
+            log.trace("OLD TIME: {}, NEW TIME: {}", oldState.getTimestamp(), sensorEvent.getTimestamp());
             return Optional.empty();
         }
 
         if (oldState.getData().equals(sensorEvent.getPayload())) {
-            log.debug("Not a new state of sensor {}, hub {}", sensorEvent.getId(), sensorEvent.getHubId());
+            log.debug("Not a new state of sensor {}, hub {} of data", sensorEvent.getId(), sensorEvent.getHubId());
+            log.trace("OLD: {}, NEW: {}", oldState.getData(), sensorEvent.getPayload());
             return Optional.empty();
         }
 

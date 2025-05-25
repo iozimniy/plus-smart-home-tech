@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ConfigurationPropertiesScan
-@ComponentScan("ru.yandex.practicum.telemetry")
+@ComponentScan("ru.yandex.practicum.telemetry.aggregator")
 public class Aggregator {
     public static void main(String[] args) {
         ConfigurableApplicationContext context = SpringApplication.run(Aggregator.class, args);

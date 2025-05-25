@@ -1,9 +1,7 @@
 package ru.yandex.practicum.telemetry.aggregator.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.avro.specific.SpecificRecordBase;
-import org.apache.kafka.clients.admin.ProducerState;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -29,7 +27,7 @@ public class AggregatorStarter {
     private final Producer<String,SpecificRecordBase> producer;
     private final AggregatorState aggregatorState;
 
-    private static final Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofSeconds(5);
+    private static final Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofSeconds(1);
 
     public AggregatorStarter(AggregatorState aggregatorState, KafkaClient client) {
         this.consumer = client.getConsumer();
@@ -52,8 +50,11 @@ public class AggregatorStarter {
                     Optional<SensorsSnapshotAvro> snapshot = aggregatorState.updateState(sensorEventAvro);
 
                     if (snapshot.isPresent()) {
-                        producer.send(new ProducerRecord<>(SNAPSHOTS_TOPIC, snapshot.get()));
+                        log.info("Send {}", snapshot);
+                        producer.send(new ProducerRecord<>(SNAPSHOTS_TOPIC, null, snapshot.get()));
                     }
+
+
                 }
 
                 consumer.commitAsync();

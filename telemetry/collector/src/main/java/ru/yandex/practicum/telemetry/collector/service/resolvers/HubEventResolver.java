@@ -2,7 +2,6 @@ package ru.yandex.practicum.telemetry.collector.service.resolvers;
 
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.grpc.telemetry.event.HubEventProto;
-import ru.yandex.practicum.telemetry.collector.model.hub.HubEventType;
 import ru.yandex.practicum.telemetry.collector.service.handler.hub.HubEventHandler;
 
 import java.util.List;

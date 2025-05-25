@@ -7,7 +7,7 @@ server:
 
 logging:
   level:
-    ru.yandex.practicum.telemetry: INFO
+    ru.yandex.practicum.telemetry: TRACE
 
 aggregator:
   kafka:
