@@ -1,26 +1,32 @@
 package model;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.HashMap;
-import java.util.Map;
-
+@Builder
 @Getter
 @Setter
 @Entity
 @Table(name = "scenario_conditions")
 public class ScenarioCondition {
-    @OneToMany
-    @MapKeyColumn(
-            table = "scenario_conditions",
-            name = "sensor_id"
-    )
-    @JoinTable(
-            name = "scenario_conditions",
-            joinColumns = @JoinColumn(name = "scenario_id"),
-            inverseJoinColumns = @JoinColumn(name = "condition_id")
-    )
-    private Map<String, Condition> conditions = new HashMap<>();
+
+    @EmbeddedId
+    private ScenarioConditionId id;
+
+    @ManyToOne
+    @JoinColumn(name = "scenario_id")
+    @MapsId
+    private Scenario scenario;
+
+    @JoinColumn(name = "sensor_id")
+    @MapsId
+    @ManyToOne
+    private Sensor sensor;
+
+    @ManyToOne
+    @JoinColumn(name = "condition_id")
+    @MapsId
+    private Condition condition;
 }

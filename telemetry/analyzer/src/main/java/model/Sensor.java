@@ -13,7 +13,7 @@ import lombok.Setter;
 public class Sensor {
 
     @Id
-    private Long id;
+    private String id;
 
     @Column(name = "hub_id")
     private String hubId;
