@@ -8,7 +8,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import java.util.Properties;
 
 @ConfigurationProperties("aggregator.kafka")
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 public class KafkaConfig implements ConsumerConfig, ProducerConfig {
 
     private AggregatorConsumerConfig consumer;

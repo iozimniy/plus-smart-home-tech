@@ -2,9 +2,9 @@ package ru.yandex.practicum.telemetry.aggregator.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.SensorStateAvro;
+import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -13,15 +13,13 @@ import java.util.Optional;
 @Component
 @Slf4j
 public class AggregatorState {
-    private Map<String, SensorsSnapshotAvro> snapshots = new HashMap<>();
+    private final Map<String, SensorsSnapshotAvro> snapshots = new HashMap<>();
 
-    public Optional<SensorsSnapshotAvro> updateState (SensorEventAvro sensorEvent) {
+    public Optional<SensorsSnapshotAvro> updateState(SensorEventAvro sensorEvent) {
 
         if (sensorEvent == null || sensorEvent.getPayload() == null) {
             throw new IllegalArgumentException("Incorrect data: " + sensorEvent);
-        }
-
-        if (!snapshots.containsKey(sensorEvent.getHubId())) {
+        } else if (!snapshots.containsKey(sensorEvent.getHubId())) {
             log.info("Create snapshot of new hub {}", sensorEvent.getHubId());
             return createSnapshot(sensorEvent);
         }
@@ -70,18 +68,13 @@ public class AggregatorState {
                                                          SensorEventAvro sensorEvent) {
         SensorStateAvro oldState = snapshot.getSensorsState().get(sensorEvent.getId());
 
-        if (oldState.getTimestamp().isAfter(sensorEvent.getTimestamp())) {
+        if (oldState.getTimestamp().isAfter(sensorEvent.getTimestamp()) ||
+                oldState.getData().equals(sensorEvent.getPayload())) {
             log.debug("Not a new state of sensor {}, hub {}", sensorEvent.getId(), sensorEvent.getHubId());
             log.trace("OLD TIME: {}, NEW TIME: {}", oldState.getTimestamp(), sensorEvent.getTimestamp());
-            return Optional.empty();
-        }
-
-        if (oldState.getData().equals(sensorEvent.getPayload())) {
-            log.debug("Not a new state of sensor {}, hub {} of data", sensorEvent.getId(), sensorEvent.getHubId());
             log.trace("OLD: {}, NEW: {}", oldState.getData(), sensorEvent.getPayload());
             return Optional.empty();
         }
-
 
         SensorStateAvro newSensorState = createNewState(sensorEvent);
         snapshot.getSensorsState().remove(sensorEvent.getId());
