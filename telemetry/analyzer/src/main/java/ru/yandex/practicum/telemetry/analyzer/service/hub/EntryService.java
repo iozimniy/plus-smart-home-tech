@@ -13,7 +13,6 @@ public class EntryService {
 
     private final DeviceService deviceService;
     private final ScenarioService scenarioService;
-    private final SnapshotService snapshotService;
 
     public void processHubEventAvro(HubEventAvro hubEventAvro) {
         if (hubEventAvro.getPayload() instanceof DeviceAddedEventAvro) {
