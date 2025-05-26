@@ -17,7 +17,7 @@
         <module>collector</module>
         <module>aggregator</module>
         <module>analyzer</module>
-        <module>analyzer</module>
+
     </modules>
     <dependencies>
         <dependency>
