@@ -1,11 +1,9 @@
-package ru.yandex.practicum.telemetry.analyzer.service;
+package ru.yandex.practicum.telemetry.analyzer.service.hub;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.kafka.telemetry.event.*;
-import ru.yandex.practicum.telemetry.analyzer.service.hub.DeviceService;
-import ru.yandex.practicum.telemetry.analyzer.service.hub.ScenarioService;
 import ru.yandex.practicum.telemetry.analyzer.service.snapshot.SnapshotService;
 
 @Service
@@ -29,9 +27,5 @@ public class EntryService {
             scenarioService.removeScenario(hubEventAvro.getHubId(),
                     (ScenarioRemovedEventAvro) hubEventAvro.getPayload());
         }
-    }
-
-    public void processSensorsSnapshotAvro(SensorsSnapshotAvro snapshot) {
-        snapshotService.processSnapshot(snapshot);
     }
 }

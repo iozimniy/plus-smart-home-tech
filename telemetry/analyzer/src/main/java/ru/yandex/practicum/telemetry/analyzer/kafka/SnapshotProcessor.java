@@ -10,7 +10,7 @@ import org.apache.kafka.common.errors.WakeupException;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.kafka.telemetry.event.SensorsSnapshotAvro;
 import ru.yandex.practicum.telemetry.analyzer.kafka.configuration.SnapshotConsumerConfig;
-import ru.yandex.practicum.telemetry.analyzer.service.EntryService;
+import ru.yandex.practicum.telemetry.analyzer.service.snapshot.SnapshotService;
 
 import java.time.Duration;
 import java.util.List;
@@ -25,9 +25,9 @@ public class SnapshotProcessor {
 
     private final Duration CONSUME_ATTEMPT_TIMEOUT = Duration.ofMillis(100);
 
-    private final EntryService service;
+    private final SnapshotService service;
 
-    public SnapshotProcessor(SnapshotConsumerConfig config, EntryService service) {
+    public SnapshotProcessor(SnapshotConsumerConfig config, SnapshotService service) {
         this.consumer = new KafkaConsumer<>(config.getSnapshotConsumerConfig());
         this.service = service;
     }
@@ -41,7 +41,7 @@ public class SnapshotProcessor {
                 ConsumerRecords<String, SpecificRecordBase> records = consumer.poll(CONSUME_ATTEMPT_TIMEOUT);
                 for (ConsumerRecord<String, SpecificRecordBase> record : records) {
                     SensorsSnapshotAvro snapshot = (SensorsSnapshotAvro) record.value();
-                    service.processSensorsSnapshotAvro(snapshot);
+                    service.processSnapshot(snapshot);
                     log.info("Coming SensorsSnapshot from hub ()", snapshot.getHubId());
                 }
             }

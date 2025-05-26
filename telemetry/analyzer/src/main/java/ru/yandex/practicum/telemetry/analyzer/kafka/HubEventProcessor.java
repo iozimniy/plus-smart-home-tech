@@ -10,7 +10,7 @@ import org.apache.kafka.common.errors.WakeupException;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.kafka.telemetry.event.HubEventAvro;
 import ru.yandex.practicum.telemetry.analyzer.kafka.configuration.HubConsumerConfig;
-import ru.yandex.practicum.telemetry.analyzer.service.EntryService;
+import ru.yandex.practicum.telemetry.analyzer.service.hub.EntryService;
 
 import java.time.Duration;
 import java.util.List;
