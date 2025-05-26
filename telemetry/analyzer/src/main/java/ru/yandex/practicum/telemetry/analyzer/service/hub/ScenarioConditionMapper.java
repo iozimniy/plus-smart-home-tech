@@ -2,11 +2,11 @@ package ru.yandex.practicum.telemetry.analyzer.service.hub;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.yandex.practicum.kafka.telemetry.event.ScenarioAddedEventAvro;
+import ru.yandex.practicum.kafka.telemetry.event.ScenarioConditionAvro;
 import ru.yandex.practicum.telemetry.analyzer.model.*;
 import ru.yandex.practicum.telemetry.analyzer.repository.ConditionRepository;
 import ru.yandex.practicum.telemetry.analyzer.repository.SensorRepository;
-import ru.yandex.practicum.kafka.telemetry.event.ScenarioAddedEventAvro;
-import ru.yandex.practicum.kafka.telemetry.event.ScenarioConditionAvro;
 import ru.yandex.practicum.telemetry.analyzer.service.exceptions.NotFoundException;
 
 import java.util.List;
@@ -64,7 +64,7 @@ public class ScenarioConditionMapper {
     private Integer mapValue(ScenarioConditionAvro scenario) {
         if (scenario.getValue() != null) {
             if (scenario.getValue() instanceof Boolean bool) {
-                return bool ? 1 :0;
+                return bool ? 1 : 0;
             } else if (scenario.getValue() instanceof Integer someInt) {
                 return someInt;
             } else {

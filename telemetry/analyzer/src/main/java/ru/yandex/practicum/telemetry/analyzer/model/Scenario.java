@@ -14,24 +14,20 @@ import java.util.List;
 @Table(name = "scenarios")
 public class Scenario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-    @Column(name = "hub_id")
-    private String hubId;
-
-    private String name;
-
     @OneToMany(
             cascade = CascadeType.ALL,
             mappedBy = "scenario_id"
     )
     List<ScenarioCondition> conditionList;
-
-    @OneToMany (
+    @OneToMany(
             cascade = CascadeType.ALL,
             mappedBy = "scenario_id"
     )
     List<ScenarioAction> actionList;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    @Column(name = "hub_id")
+    private String hubId;
+    private String name;
 }

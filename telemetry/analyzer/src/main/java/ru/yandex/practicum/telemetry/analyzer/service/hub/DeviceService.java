@@ -1,14 +1,13 @@
 package ru.yandex.practicum.telemetry.analyzer.service.hub;
 
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.telemetry.analyzer.model.Sensor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.telemetry.analyzer.repository.SensorRepository;
 import ru.yandex.practicum.kafka.telemetry.event.DeviceAddedEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.DeviceRemovedEventAvro;
+import ru.yandex.practicum.telemetry.analyzer.model.Sensor;
+import ru.yandex.practicum.telemetry.analyzer.repository.SensorRepository;
 
 @Service
 @Slf4j

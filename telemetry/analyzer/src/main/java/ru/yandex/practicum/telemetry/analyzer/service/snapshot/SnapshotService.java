@@ -3,17 +3,17 @@ package ru.yandex.practicum.telemetry.analyzer.service.snapshot;
 import com.google.protobuf.Timestamp;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.telemetry.analyzer.model.Condition;
-import ru.yandex.practicum.telemetry.analyzer.model.Scenario;
-import ru.yandex.practicum.telemetry.analyzer.model.ScenarioAction;
-import ru.yandex.practicum.telemetry.analyzer.model.ScenarioCondition;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.telemetry.analyzer.repository.ScenarioRepository;
 import ru.yandex.practicum.grpc.telemetry.event.ActionTypeProto;
 import ru.yandex.practicum.grpc.telemetry.event.DeviceActionProto;
 import ru.yandex.practicum.grpc.telemetry.event.DeviceActionRequest;
 import ru.yandex.practicum.kafka.telemetry.event.*;
+import ru.yandex.practicum.telemetry.analyzer.model.Condition;
+import ru.yandex.practicum.telemetry.analyzer.model.Scenario;
+import ru.yandex.practicum.telemetry.analyzer.model.ScenarioAction;
+import ru.yandex.practicum.telemetry.analyzer.model.ScenarioCondition;
+import ru.yandex.practicum.telemetry.analyzer.repository.ScenarioRepository;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -48,15 +48,15 @@ public class SnapshotService {
         for (ScenarioCondition scenarioCondition : scenarioConditions) {
 
             //если нет сенсора, то и сценарий не реализуется
-             if (!state.containsKey(scenarioCondition.getSensor().getId())) {
-                 return false;
-             }
+            if (!state.containsKey(scenarioCondition.getSensor().getId())) {
+                return false;
+            }
 
-             Condition condition = scenarioCondition.getCondition();
-             var data = state.get(scenarioCondition.getSensor().getId()).getData();
+            Condition condition = scenarioCondition.getCondition();
+            var data = state.get(scenarioCondition.getSensor().getId()).getData();
 
-             //в зависимости от типа разные проверки
-           return switch (condition.getType()) {
+            //в зависимости от типа разные проверки
+            return switch (condition.getType()) {
                 case MOTION -> checkSensorValue(condition.getValue(), condition.getOperation(),
                         ((MotionSensorAvro) data).getMotion() ? 1 : 0);
                 case LUMINOSITY -> checkSensorValue(condition.getValue(), condition.getOperation(), (

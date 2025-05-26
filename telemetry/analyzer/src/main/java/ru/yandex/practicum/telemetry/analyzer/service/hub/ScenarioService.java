@@ -1,27 +1,27 @@
 package ru.yandex.practicum.telemetry.analyzer.service.hub;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import ru.yandex.practicum.telemetry.analyzer.model.Scenario;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.telemetry.analyzer.repository.ScenarioRepository;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioAddedEventAvro;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioRemovedEventAvro;
+import ru.yandex.practicum.telemetry.analyzer.model.Scenario;
+import ru.yandex.practicum.telemetry.analyzer.repository.ScenarioRepository;
 import ru.yandex.practicum.telemetry.analyzer.service.exceptions.NotFoundException;
 
 import java.util.ArrayList;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 public class ScenarioService {
 
-    private final ScenarioRepository scenarioRepository;
-    private final ScenarioConditionMapper scenarioConditionMapper;
-    private final ScenarioActionMapper scenarioActionMapper;
+    private ScenarioRepository scenarioRepository;
+    private ScenarioConditionMapper scenarioConditionMapper;
+    private ScenarioActionMapper scenarioActionMapper;
 
     @SneakyThrows
     public void addScenario(String hubId, ScenarioAddedEventAvro payload) {
@@ -43,7 +43,7 @@ public class ScenarioService {
     @SneakyThrows
     public void removeScenario(String hubId, ScenarioRemovedEventAvro payload) {
         Scenario scenario = scenarioRepository.findByHubIdAndName(hubId, payload.getName())
-                .orElseThrow(() -> new NotFoundException ("Not found scenario with hubId " + hubId
+                .orElseThrow(() -> new NotFoundException("Not found scenario with hubId " + hubId
                         + " and name " + payload.getName()));
         scenarioRepository.delete(scenario);
     }

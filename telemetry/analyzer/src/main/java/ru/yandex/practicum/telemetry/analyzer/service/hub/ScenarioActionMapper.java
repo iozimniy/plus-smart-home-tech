@@ -2,10 +2,10 @@ package ru.yandex.practicum.telemetry.analyzer.service.hub;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.telemetry.analyzer.model.*;
-import ru.yandex.practicum.telemetry.analyzer.repository.SensorRepository;
 import ru.yandex.practicum.kafka.telemetry.event.DeviceActionAvro;
 import ru.yandex.practicum.kafka.telemetry.event.ScenarioAddedEventAvro;
+import ru.yandex.practicum.telemetry.analyzer.model.*;
+import ru.yandex.practicum.telemetry.analyzer.repository.SensorRepository;
 import ru.yandex.practicum.telemetry.analyzer.service.exceptions.NotFoundException;
 
 import java.util.List;
