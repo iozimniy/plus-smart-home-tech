@@ -1,9 +1,7 @@
 package ru.yandex.practicum.telemetry.analyzer.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import ru.yandex.practicum.kafka.telemetry.event.ActionTypeAvro;
 
 @Builder
@@ -11,6 +9,8 @@ import ru.yandex.practicum.kafka.telemetry.event.ActionTypeAvro;
 @Setter
 @Entity
 @Table(name = "actions")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Action {
 
     @Id

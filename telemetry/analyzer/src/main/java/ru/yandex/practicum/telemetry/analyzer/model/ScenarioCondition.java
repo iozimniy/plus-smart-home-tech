@@ -1,15 +1,15 @@
 package ru.yandex.practicum.telemetry.analyzer.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Builder
 @Getter
 @Setter
 @Entity
 @Table(name = "scenario_conditions")
+@AllArgsConstructor
+@NoArgsConstructor
 public class ScenarioCondition {
 
     @EmbeddedId

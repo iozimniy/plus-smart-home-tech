@@ -1,9 +1,7 @@
 package ru.yandex.practicum.telemetry.analyzer.model;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +10,8 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "scenarios")
+@AllArgsConstructor
+@NoArgsConstructor
 public class Scenario {
 
     @OneToMany(
