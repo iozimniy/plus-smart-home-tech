@@ -1,8 +1,10 @@
-import org.springframework.stereotype.Component;
-import ru.yandex.practicum.telemetry.analyzer.kafka.HubEventProcessor;
+package ru.yandex.practicum.telemetry.analyzer.service;
+
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.stereotype.Component;
+import ru.yandex.practicum.telemetry.analyzer.kafka.HubEventProcessor;
 import ru.yandex.practicum.telemetry.analyzer.kafka.SnapshotProcessor;
 
 @Component

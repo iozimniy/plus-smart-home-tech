@@ -1,6 +1,6 @@
 package ru.yandex.practicum.telemetry.analyzer.service.hub;
 
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,7 +11,7 @@ import ru.yandex.practicum.telemetry.analyzer.repository.SensorRepository;
 
 @Service
 @Slf4j
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Transactional
 public class DeviceService {
 

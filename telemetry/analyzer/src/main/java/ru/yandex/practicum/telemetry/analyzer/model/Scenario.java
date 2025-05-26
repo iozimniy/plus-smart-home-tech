@@ -16,12 +16,12 @@ public class Scenario {
 
     @OneToMany(
             cascade = CascadeType.ALL,
-            mappedBy = "scenario_id"
+            mappedBy = "scenario"
     )
     List<ScenarioCondition> conditionList;
     @OneToMany(
             cascade = CascadeType.ALL,
-            mappedBy = "scenario_id"
+            mappedBy = "scenario"
     )
     List<ScenarioAction> actionList;
     @Id

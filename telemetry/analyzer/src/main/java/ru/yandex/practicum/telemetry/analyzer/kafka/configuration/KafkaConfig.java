@@ -1,13 +1,16 @@
 package ru.yandex.practicum.telemetry.analyzer.kafka.configuration;
 
 import lombok.Getter;
+import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
-@Component
+@Getter
+@Setter
 @ConfigurationProperties("analyzer.kafka")
+@Component
 public class KafkaConfig implements HubConsumerConfig, SnapshotConsumerConfig {
     private AnalyzerConsumerConfig hubConsumer;
     private AnalyzerConsumerConfig snapshotConsumer;
@@ -23,6 +26,7 @@ public class KafkaConfig implements HubConsumerConfig, SnapshotConsumerConfig {
     }
 
     @Getter
+    @Setter
     public static class AnalyzerConsumerConfig {
         private Properties properties;
     }
