@@ -34,7 +34,6 @@ public class SnapshotProcessor {
 
     public void start() {
         try {
-            log.trace("SnapshotProcessor started");
             consumer.subscribe(List.of(SNAPSHOT_TOPIC));
 
             while (true) {

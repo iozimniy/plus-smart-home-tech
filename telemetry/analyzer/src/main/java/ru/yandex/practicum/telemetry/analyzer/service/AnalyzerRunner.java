@@ -18,13 +18,10 @@ public class AnalyzerRunner implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-        log.trace("Running Analyzer");
         Thread hubEventsThread = new Thread(hubEventProcessor);
         hubEventsThread.setName("HubEventHandlerThread");
         hubEventsThread.start();
-        log.trace("hubEventProcessor started");
 
         snapshotProcessor.start();
-        log.trace("snapshotProcessor started");
     }
 }

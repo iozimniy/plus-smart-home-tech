@@ -35,7 +35,6 @@ public class HubEventProcessor implements Runnable {
     @Override
     public void run() {
         try {
-            log.trace("HubEventProcessor started");
             consumer.subscribe(List.of(HUB_TOPIC));
 
             while (true) {
