@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.kafka.telemetry.event.*;
 import service.hub.DeviceService;
 import service.hub.ScenarioService;
+import service.snapshot.SnapshotService;
 
 @Service
 @RequiredArgsConstructor
@@ -14,6 +15,7 @@ public class EntryService {
 
     private final DeviceService deviceService;
     private final ScenarioService scenarioService;
+    private final SnapshotService snapshotService;
 
     public void processHubEventAvro(HubEventAvro hubEventAvro) {
         if (hubEventAvro.getPayload() instanceof DeviceAddedEventAvro) {
@@ -27,5 +29,9 @@ public class EntryService {
             scenarioService.removeScenario(hubEventAvro.getHubId(),
                     (ScenarioRemovedEventAvro) hubEventAvro.getPayload());
         }
+    }
+
+    public void processSensorsSnapshotAvro(SensorsSnapshotAvro snapshot) {
+        snapshotService.processSnapshot(snapshot);
     }
 }
