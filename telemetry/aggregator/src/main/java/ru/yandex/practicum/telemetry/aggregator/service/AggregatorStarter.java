@@ -49,12 +49,9 @@ public class AggregatorStarter {
                     log.trace("Processing event {}", sensorEventAvro);
                     Optional<SensorsSnapshotAvro> snapshot = aggregatorState.updateState(sensorEventAvro);
 
-                    if (snapshot.isPresent()) {
-                        log.info("Send {}", snapshot);
-                        producer.send(new ProducerRecord<>(SNAPSHOTS_TOPIC, null, snapshot.get()));
-                    }
-
-
+                    snapshot.ifPresent( snapshotAvro
+                            -> producer.send(new ProducerRecord<>(SNAPSHOTS_TOPIC, null, snapshot.get())));
+                    log.info("Send {}", snapshot);
                 }
 
                 consumer.commitAsync();
