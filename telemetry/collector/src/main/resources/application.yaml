@@ -1,11 +1,12 @@
 spring:
   application:
     name: collector
-grpc:
-  server:
-    port: 59091
-
-logging:
-  level:
-    ru.yandex.practicum.telemetry: DEBUG
+  config:
+    import: configserver:http://localhost:8888
+  cloud:
+    config:
+      fail-fast: true
+    retry:
+      useRandomPolicy: true
+      max-interval: 6000
 

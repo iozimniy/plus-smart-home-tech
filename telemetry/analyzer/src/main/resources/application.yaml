@@ -1,50 +1,11 @@
 spring:
   application:
     name: analyzer
-  sql:
-    init: always
-
-  jpa:
-    defer-datasource-initialization: true
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        format_sql: true
-        show_sql: true
-  datasource:
-    driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/postgres
-    username: user
-    password: 12345
-
-logging:
-  level:
-    ru.yandex.practicum.telemetry: TRACE
-    org:
-      hibernate.SQL: TRACE
-      springframework: INFO
-
-grpc:
-  client:
-    hub-router:
-      address: 'static://localhost:59090'
-      enableKeepAlive: true
-      keepAliveWithoutCalls: true
-      negotiationType: plaintext
-
-analyzer:
-  kafka:
-    hub-consumer:
-      properties:
-        bootstrap.servers: localhost:9092
-        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-        value.deserializer: ru.yandex.practicum.kafka.serializer.HubEventDeserializer
-        group.id: hub-group
-    snapshot-consumer:
-      properties:
-        bootstrap.servers: localhost:9092
-        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-        value.deserializer: ru.yandex.practicum.kafka.serializer.SnapshotDeserializer
-        group.id: snapshot-group
-
+  config:
+    import: configserver:http://localhost:8888
+  cloud:
+    config:
+      fail-fast: true
+    retry:
+      useRandomPolicy: true
+      max-interval: 6000

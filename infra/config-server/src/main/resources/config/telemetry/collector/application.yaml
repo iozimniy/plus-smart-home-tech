@@ -1,0 +1,7 @@
+grpc:
+  server:
+    port: 59091
+
+logging:
+  level:
+    ru.yandex.practicum.telemetry: DEBUG
