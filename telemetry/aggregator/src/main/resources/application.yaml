@@ -1,24 +1,11 @@
 spring:
   application:
     name: aggregator
-
-server:
-  port: 8081
-
-logging:
-  level:
-    ru.yandex.practicum.telemetry: TRACE
-
-aggregator:
-  kafka:
-    consumer:
-      properties:
-        bootstrap.servers: localhost:9092
-        key.deserializer: org.apache.kafka.common.serialization.StringDeserializer
-        value.deserializer: ru.yandex.practicum.kafka.serializer.SensorEventDeserializer
-        group.id: agg-group
-    producer:
-      properties:
-        bootstrap.servers: localhost:9092
-        key.serializer: org.apache.kafka.common.serialization.StringSerializer
-        value.serializer: ru.yandex.practicum.kafka.serializer.GeneralAvroSerializer
+  config:
+    import: configserver:http://localhost:8888
+  cloud:
+    config:
+      fail-fast: true
+    retry:
+      useRandomPolicy: true
+      max-interval: 6000
