@@ -1,16 +1,16 @@
 package ru.yandex.practicum.mapper;
 
+import org.springframework.stereotype.Component;
 import ru.yandex.practicum.model.Product;
 import ru.yandex.practicum.products.ProductDto;
 
-import java.util.List;
-
+@Component
 public class ProductMapper {
 
     public static ProductDto mapToDto(Product product) {
         return ProductDto.builder()
                 .productId(product.getId())
-                .productName(product.getName())
+                .productName(product.getProductName())
                 .description(product.getDescription())
                 .imageSrc(product.getImage())
                 .quantityState(product.getQuantityState())
@@ -22,7 +22,7 @@ public class ProductMapper {
 
     public static Product mapToEntity(ProductDto productDto) {
         return Product.builder()
-                .name(productDto.getProductName())
+                .productName(productDto.getProductName())
                 .description(productDto.getDescription())
                 .image(productDto.getImageSrc())
                 .quantityState(productDto.getQuantityState())

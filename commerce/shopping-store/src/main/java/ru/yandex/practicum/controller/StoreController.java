@@ -2,6 +2,7 @@ package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,6 +13,7 @@ import ru.yandex.practicum.products.QuantityState;
 import ru.yandex.practicum.service.StoreService;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -22,29 +24,27 @@ public class StoreController {
     private final StoreService service;
 
     @GetMapping
-    public Collection<ProductDto> getProducts(@RequestParam ProductCategory category,
-                                              @RequestParam Integer page,
-                                              @RequestParam Integer size,
-                                              @RequestParam String sort) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(sort));
-
-        return service.getProducts(category, pageable);
+    public Page<ProductDto> getProducts(@RequestParam ProductCategory category,
+                                             @RequestParam(required = false) Integer page,
+                                             @RequestParam(required = false) Integer size,
+                                             @RequestParam(required = false) String sort) {
+        return service.getProducts(category, page, size, sort);
     }
 
     @PutMapping
-    public ProductDto createProduct(@RequestParam ProductDto productDto) {
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
         return service.createProduct(productDto);
     }
 
     @SneakyThrows
     @PostMapping
-    public ProductDto updateProduct(@RequestParam ProductDto productDto) {
+    public ProductDto updateProduct(@RequestBody ProductDto productDto) {
         return service.updateProduct(productDto);
     }
 
     @SneakyThrows
     @PostMapping("/removeProductFromStore")
-    public Boolean removeProduct(@RequestParam UUID productId) {
+    public Boolean removeProduct(@RequestBody UUID productId) {
         return service.deactivateProduct(productId);
     }
 

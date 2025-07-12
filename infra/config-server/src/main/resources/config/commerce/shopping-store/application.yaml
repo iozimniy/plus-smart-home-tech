@@ -2,7 +2,6 @@ spring:
   sql:
     init: always
   jpa:
-    defer-datasource-initialization: true
     hibernate:
       ddl-auto: update
     properties:
@@ -11,8 +10,8 @@ spring:
         show_sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/smart_home_commerce?currentSchema=store
-    username: user
+    url: jdbc:postgresql://localhost:5435/sh_commerce_store
+    username: user_store
     password: 12345
 
 logging:

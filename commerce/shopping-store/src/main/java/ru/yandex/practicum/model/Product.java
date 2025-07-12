@@ -22,7 +22,8 @@ public class Product {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
     @NotNull
-    private String name;
+    @Column(name = "name")
+    private String productName;
     @NotNull
     private String description;
     private String image;
