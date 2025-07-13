@@ -45,35 +45,52 @@ public class WarehouseServiceImpl implements WarehouseService {
     @Override
     public BookedProductsDto checkProducts(CartDto cartDto) throws ProductInShoppingCartLowQuantityInWarehouse {
         log.info("Request for check products {}", cartDto);
-        List<UUID> listId = cartDto.getProducts().stream()
-                .map(product -> product.getId())
-                .collect(Collectors.toList());
-        Map<UUID, Product> products = repository.findAllById(listId)
-                .stream().collect(Collectors.toMap(
-                        s -> s.getId(),
-                        s -> s
-                ));
+        List<UUID> listId = cartDto.getProducts().keySet().stream().toList();
+//        Map<UUID, Product> products = repository.findAllById(listId)
+//                .stream().collect(Collectors.toMap(
+//                        s -> s.getId(),
+//                        s -> s
+//                ));
+        
+        List<Product> products = repository.findAllById(listId);
 
         Double deliveryWeight = 0.0;
         Double deliveryVolume = 0.0;
         Boolean fragile = false;
 
-        for (CartProductDto product : cartDto.getProducts()) {
-            Product thisProduct = products.get(product.getId());
-
-            if (products.get(product.getId()).getQuantity() < product.getQuantity()) {
+        for (Product product : products) {
+            if (product.getQuantity() < cartDto.getProducts().get(product.getId())) {
                 throw new ProductInShoppingCartLowQuantityInWarehouse("Товар c id" + product.getId() +
                         " не присутствует в требуемом количестве");
             }
 
-            Double volume = thisProduct.getWidth() * thisProduct.getHeight() * thisProduct.getDepth();
+            Double volume = product.getWidth() * product.getHeight() * product.getDepth();
             deliveryVolume = deliveryVolume + volume;
-            deliveryWeight = deliveryWeight + thisProduct.getWeight();
+            deliveryWeight = deliveryWeight + product.getWeight();
 
-            if (!fragile && thisProduct.getFragile()) {
+            if (!fragile && product.getFragile()) {
                 fragile = true;
             }
         }
+
+        //тут идёт итерация по продуктам из CartDto, а у нас там теперь map, а не list
+        //нужно по чему-то итерарироваться, мб, по листу
+//        for (CartProductDto product : cartDto.getProducts()) {
+//            Product thisProduct = products.get(product.getId());
+//
+//            if (products.get(product.getId()).getQuantity() < product.getQuantity()) {
+//                throw new ProductInShoppingCartLowQuantityInWarehouse("Товар c id" + product.getId() +
+//                        " не присутствует в требуемом количестве");
+//            }
+//
+//            Double volume = thisProduct.getWidth() * thisProduct.getHeight() * thisProduct.getDepth();
+//            deliveryVolume = deliveryVolume + volume;
+//            deliveryWeight = deliveryWeight + thisProduct.getWeight();
+//
+//            if (!fragile && thisProduct.getFragile()) {
+//                fragile = true;
+//            }
+//        }
 
         return BookedProductsDto.builder()
                 .deliveryVolume(deliveryVolume)

@@ -9,6 +9,7 @@ import ru.yandex.practicum.model.Cart;
 import ru.yandex.practicum.model.CartProduct;
 import ru.yandex.practicum.reposiroty.CartRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -32,15 +33,18 @@ public class CardServiceImpl implements CartService {
         log.debug("Request for add product from username: {} with products {}", username, products);
         checkCreateCart(username);
 
-
         Cart cart = repository.findByUsername(username);
-        List<CartProduct> cartProducts = cart.getProducts();
+        ArrayList<CartProduct> newProducts = new ArrayList<>();
 
         for (UUID uuid : products.keySet()) {
-            cartProducts.add(toCartProduct(cart, uuid, products.get(uuid)));
+            newProducts.add(toCartProduct(cart, uuid, products.get(uuid)));
         }
 
-        cart.setProducts(cartProducts);
+        if (cart.getProducts() == null) {
+            cart.setProducts(newProducts);
+        } else {
+            cart.getProducts().addAll(newProducts);
+        }
 
         return toCartDto(repository.save(cart));
     }
@@ -64,6 +68,7 @@ public class CardServiceImpl implements CartService {
     }
 
     @Override
+    @Transactional
     public CartDto removeProducts(String username, List<UUID> products) throws NotAuthorizedUserException,
             NoProductsInShoppingCartException {
         log.info("Request for remove products from username {} with uuid {}", username, products);
@@ -71,15 +76,21 @@ public class CardServiceImpl implements CartService {
 
         Cart cart = repository.findByUsername(username);
         List<CartProduct> cartProducts = cart.getProducts();
-
         checkProducts(cartProducts, products);
-        cartProducts.stream().filter(cartProduct -> !products.contains(cartProduct.getProductId()))
-                .collect(Collectors.toList());
-        cart.setProducts(cartProducts);
+
+        ArrayList<CartProduct> newCartProductList = new ArrayList<>();
+        for (CartProduct cartProduct : cartProducts) {
+            if (!products.contains(cartProduct.getProductId())) {
+                newCartProductList.add(cartProduct);
+            }
+        }
+
+        cart.setProducts(newCartProductList);
         return toCartDto(repository.save(cart));
     }
 
     @Override
+    @Transactional
     public CartDto changeQuantity(String username, ChangeProductQuantityRequest request) throws NotAuthorizedUserException, NoProductsInShoppingCartException {
         log.info("Request for change quantity product with uuid {} from usename {}", request.getProductId(), username);
         chekUser(username);
@@ -88,9 +99,16 @@ public class CardServiceImpl implements CartService {
         List<CartProduct> cartProducts = cart.getProducts();
         checkProducts(cartProducts, List.of(request.getProductId()));
 
-        cartProducts.remove(toCartProduct(cart, request.getProductId(), request.getNewQuantity()));
-        cartProducts.add(toCartProduct(cart, request.getProductId(), request.getNewQuantity()));
-        cart.setProducts(cartProducts);
+        ArrayList<CartProduct> newCardProductsList = new ArrayList<>();
+        newCardProductsList.add(toCartProduct(cart, request.getProductId(), request.getNewQuantity()));
+
+        for (CartProduct cartProduct : cartProducts) {
+            if (!cartProduct.getProductId().equals(request.getProductId())) {
+                newCardProductsList.add(cartProduct);
+            }
+        }
+
+        cart.setProducts(newCardProductsList);
         return toCartDto(repository.save(cart));
     }
 

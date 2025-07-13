@@ -18,7 +18,7 @@ public class CartProduct {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @EqualsAndHashCode.Exclude
+    @EqualsAndHashCode.Include
     private UUID id;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "cart_id", nullable = false)
@@ -26,11 +26,4 @@ public class CartProduct {
     @Column(name = "product_id")
     private UUID productId;
     private Integer quantity;
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        CartProduct that = (CartProduct) o;
-        return Objects.equals(id, that.id) && Objects.equals(cart, that.cart) && Objects.equals(productId, that.productId) && Objects.equals(quantity, that.quantity);
-    }
 }
