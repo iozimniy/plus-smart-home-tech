@@ -4,8 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.common.clients.StoreClient;
 import ru.yandex.practicum.products.ProductCategory;
 import ru.yandex.practicum.products.ProductDto;
+import ru.yandex.practicum.products.ProductNotFoundException;
 import ru.yandex.practicum.products.QuantityState;
 import ru.yandex.practicum.service.StoreService;
 
@@ -14,7 +16,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/shopping-store")
 @RequiredArgsConstructor
-public class StoreController {
+public class StoreController implements StoreClient {
 
     private final StoreService service;
 
@@ -31,28 +33,24 @@ public class StoreController {
         return service.createProduct(productDto);
     }
 
-    @SneakyThrows
     @PostMapping
-    public ProductDto updateProduct(@RequestBody ProductDto productDto) {
+    public ProductDto updateProduct(@RequestBody ProductDto productDto) throws ProductNotFoundException {
         return service.updateProduct(productDto);
     }
 
-    @SneakyThrows
     @PostMapping("/removeProductFromStore")
-    public Boolean removeProduct(@RequestBody UUID productId) {
+    public Boolean removeProduct(@RequestBody UUID productId) throws ProductNotFoundException {
         return service.deactivateProduct(productId);
     }
 
     @PostMapping("quantityState")
-    @SneakyThrows
     public Boolean updateQuantityState(@RequestParam UUID productId,
-                                       @RequestParam QuantityState quantityState) {
+                                       @RequestParam QuantityState quantityState) throws ProductNotFoundException {
         return service.updateQuantityState(productId, quantityState);
     }
 
-    @SneakyThrows
     @GetMapping("/{productId}")
-    public ProductDto getProductById(@PathVariable UUID productId) {
+    public ProductDto getProductById(@PathVariable UUID productId) throws ProductNotFoundException {
         return service.getProductById(productId);
     }
 }
