@@ -1,0 +1,23 @@
+spring:
+  sql:
+    init: always
+  jpa:
+    defer-datasource-initialization: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5433/sh_commerce_cart
+    username: user_cart
+    password: 12345
+
+logging:
+  level:
+    ru.yandex.practicum: DEBUG
+    org:
+      hibernate.SQL: TRACE
+      springframework: INFO
