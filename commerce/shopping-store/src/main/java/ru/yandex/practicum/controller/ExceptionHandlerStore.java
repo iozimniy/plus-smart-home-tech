@@ -2,13 +2,13 @@ package ru.yandex.practicum.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ru.yandex.practicum.common.ErrorResponse;
 import ru.yandex.practicum.products.ProductNotFoundException;
 
 @RestControllerAdvice
 @Slf4j
-public class ExceptionHandler {
+public class ExceptionHandlerStore {
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @org.springframework.web.bind.annotation.ExceptionHandler(ProductNotFoundException.class)

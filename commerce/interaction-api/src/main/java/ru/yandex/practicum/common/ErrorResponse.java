@@ -1,4 +1,4 @@
-package ru.yandex.practicum.controller;
+package ru.yandex.practicum.common;
 
 import lombok.Builder;
 import lombok.Getter;
