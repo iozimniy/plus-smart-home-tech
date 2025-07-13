@@ -12,9 +12,7 @@ import ru.yandex.practicum.model.Product;
 import ru.yandex.practicum.products.*;
 import ru.yandex.practicum.repository.StoreRepository;
 
-import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static ru.yandex.practicum.mapper.ProductMapper.mapToDto;
 import static ru.yandex.practicum.mapper.ProductMapper.mapToEntity;
@@ -36,8 +34,8 @@ public class StoreServiceImpl implements StoreService {
         if (sort != null && page != null) {
             pageable = PageRequest.of(page, size, Sort.by(sort));
             return repository.findByProductCategoryAndProductState(
-                    category,
-                    ProductState.ACTIVE, pageable)
+                            category,
+                            ProductState.ACTIVE, pageable)
                     .map(ProductMapper::mapToDto);
         } else if (sort == null && page == null) {
             pageable = PageRequest.of(0, 10);

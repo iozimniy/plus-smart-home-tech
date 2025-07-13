@@ -5,14 +5,14 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.cart.CartDto;
-import ru.yandex.practicum.cart.CartProductDto;
 import ru.yandex.practicum.model.Product;
 import ru.yandex.practicum.repository.WarehouseRepository;
 import ru.yandex.practicum.warehouse.*;
 
 import java.security.SecureRandom;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Random;
+import java.util.UUID;
 
 import static ru.yandex.practicum.mapper.WarehouseMapper.mapToProductFromNewProduct;
 
@@ -22,13 +22,11 @@ import static ru.yandex.practicum.mapper.WarehouseMapper.mapToProductFromNewProd
 @RequiredArgsConstructor
 public class WarehouseServiceImpl implements WarehouseService {
 
-    private final WarehouseRepository repository;
-
     private static final String[] ADDRESSES =
-            new String[] {"ADDRESS_1", "ADDRESS_2"};
-
+            new String[]{"ADDRESS_1", "ADDRESS_2"};
     private static final String CURRENT_ADDRESS =
             ADDRESSES[Random.from(new SecureRandom()).nextInt(0, 1)];
+    private final WarehouseRepository repository;
 
     @Transactional
     @Override
@@ -52,7 +50,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 //                        s -> s.getId(),
 //                        s -> s
 //                ));
-        
+
         List<Product> products = repository.findAllById(listId);
         log.debug("Список продуктов: {}", products.stream().map(product -> product.getId()).toList());
 

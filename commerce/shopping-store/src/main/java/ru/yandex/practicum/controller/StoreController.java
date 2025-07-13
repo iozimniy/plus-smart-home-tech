@@ -3,17 +3,12 @@ package ru.yandex.practicum.controller;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.products.ProductCategory;
 import ru.yandex.practicum.products.ProductDto;
 import ru.yandex.practicum.products.QuantityState;
 import ru.yandex.practicum.service.StoreService;
 
-import java.util.Collection;
-import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -25,9 +20,9 @@ public class StoreController {
 
     @GetMapping
     public Page<ProductDto> getProducts(@RequestParam ProductCategory category,
-                                             @RequestParam(required = false) Integer page,
-                                             @RequestParam(required = false) Integer size,
-                                             @RequestParam(required = false) String sort) {
+                                        @RequestParam(required = false) Integer page,
+                                        @RequestParam(required = false) Integer size,
+                                        @RequestParam(required = false) String sort) {
         return service.getProducts(category, page, size, sort);
     }
 

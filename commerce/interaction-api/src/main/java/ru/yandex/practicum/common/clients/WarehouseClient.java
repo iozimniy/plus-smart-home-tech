@@ -12,4 +12,6 @@ public interface WarehouseClient {
 
     @PostMapping("/check")
     BookedProductsDto checkProducts(@RequestBody CartDto cartDto) throws ProductInShoppingCartLowQuantityInWarehouse;
+
+
 }

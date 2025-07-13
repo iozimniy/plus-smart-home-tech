@@ -5,7 +5,6 @@ import lombok.SneakyThrows;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.cart.CartDto;
-import ru.yandex.practicum.cart.CartProductDto;
 import ru.yandex.practicum.cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.service.CartService;
 
@@ -22,7 +21,7 @@ public class CartController {
     @SneakyThrows
     @PutMapping
     public CartDto addProduct(@RequestParam String username,
-                                           @RequestBody Map<UUID, Integer> products) {
+                              @RequestBody Map<UUID, Integer> products) {
         return service.addProduct(username, products);
     }
 
@@ -34,7 +33,7 @@ public class CartController {
 
     @DeleteMapping
     @SneakyThrows
-    public ResponseEntity<Void>  deleteCart(@RequestParam String username) {
+    public ResponseEntity<Void> deleteCart(@RequestParam String username) {
         service.deleteCart(username);
         return ResponseEntity.ok().build();
     }
@@ -42,7 +41,7 @@ public class CartController {
     @PostMapping("/remove")
     @SneakyThrows
     public CartDto removeProducts(@RequestParam String username, @RequestBody List<UUID> products) {
-       return service.removeProducts(username, products);
+        return service.removeProducts(username, products);
     }
 
     @PostMapping("/change-quantity")

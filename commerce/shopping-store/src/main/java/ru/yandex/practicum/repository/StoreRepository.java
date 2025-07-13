@@ -8,7 +8,6 @@ import ru.yandex.practicum.model.Product;
 import ru.yandex.practicum.products.ProductCategory;
 import ru.yandex.practicum.products.ProductState;
 
-import java.util.List;
 import java.util.UUID;
 
 @Repository
@@ -16,5 +15,6 @@ public interface StoreRepository extends JpaRepository<Product, UUID> {
     Page<Product> findByProductCategoryAndProductState(ProductCategory category,
                                                        ProductState productState,
                                                        Pageable pageable);
+
     Page<Product> findByProductState(ProductState productState, Pageable pageable);
 }

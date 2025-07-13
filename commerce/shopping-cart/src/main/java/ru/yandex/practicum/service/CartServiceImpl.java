@@ -4,7 +4,10 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.yandex.practicum.cart.*;
+import ru.yandex.practicum.cart.CartDto;
+import ru.yandex.practicum.cart.ChangeProductQuantityRequest;
+import ru.yandex.practicum.cart.NoProductsInShoppingCartException;
+import ru.yandex.practicum.cart.NotAuthorizedUserException;
 import ru.yandex.practicum.common.clients.WarehouseClient;
 import ru.yandex.practicum.model.Cart;
 import ru.yandex.practicum.model.CartProduct;
@@ -16,7 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import static ru.yandex.practicum.mapper.CartMapper.*;
+import static ru.yandex.practicum.mapper.CartMapper.toCartDto;
+import static ru.yandex.practicum.mapper.CartMapper.toCartProduct;
 
 @Service
 @RequiredArgsConstructor
@@ -30,7 +34,7 @@ public class CartServiceImpl implements CartService {
     @Transactional
     @Override
     public CartDto addProduct(String username,
-                                           Map<UUID, Integer> products) throws NotAuthorizedUserException, ProductInShoppingCartLowQuantityInWarehouse {
+                              Map<UUID, Integer> products) throws NotAuthorizedUserException, ProductInShoppingCartLowQuantityInWarehouse {
         log.info("Request for add product from username: {} with products {}", username, products);
         log.debug("Request for add product from username: {} with products {}", username, products);
         checkCreateCart(username);
@@ -53,7 +57,6 @@ public class CartServiceImpl implements CartService {
 
         return toCartDto(repository.save(cart));
     }
-
 
 
     @Override
@@ -128,10 +131,10 @@ public class CartServiceImpl implements CartService {
     }
 
     private void checkCreateCart(String username) {
-       if (!repository.existsByUsername(username)) {
-           Cart newCart = Cart.builder().username(username).build();
-           repository.save(newCart);
-       }
+        if (!repository.existsByUsername(username)) {
+            Cart newCart = Cart.builder().username(username).build();
+            repository.save(newCart);
+        }
     }
 
     private void checkProducts(List<CartProduct> cartProducts, List<UUID> list)

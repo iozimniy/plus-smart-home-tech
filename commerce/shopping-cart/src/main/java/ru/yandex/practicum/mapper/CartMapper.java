@@ -2,11 +2,9 @@ package ru.yandex.practicum.mapper;
 
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.cart.CartDto;
-import ru.yandex.practicum.cart.CartProductDto;
 import ru.yandex.practicum.model.Cart;
 import ru.yandex.practicum.model.CartProduct;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -33,10 +31,10 @@ public class CartMapper {
                 .build();
     }
 
-    public static Map<UUID, Integer> toListCartProductDto (List<CartProduct> products) {
+    public static Map<UUID, Integer> toListCartProductDto(List<CartProduct> products) {
         return products.stream().collect(Collectors.toMap(
-           s -> s.getProductId(),
-           s -> s.getQuantity()
+                s -> s.getProductId(),
+                s -> s.getQuantity()
         ));
     }
 }
