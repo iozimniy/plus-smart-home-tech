@@ -5,15 +5,16 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.cart.*;
+import ru.yandex.practicum.common.clients.WarehouseClient;
 import ru.yandex.practicum.model.Cart;
 import ru.yandex.practicum.model.CartProduct;
 import ru.yandex.practicum.reposiroty.CartRepository;
+import ru.yandex.practicum.warehouse.ProductInShoppingCartLowQuantityInWarehouse;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import static ru.yandex.practicum.mapper.CartMapper.*;
 
@@ -21,19 +22,21 @@ import static ru.yandex.practicum.mapper.CartMapper.*;
 @RequiredArgsConstructor
 @Transactional
 @Slf4j
-public class CardServiceImpl implements CartService {
+public class CartServiceImpl implements CartService {
 
     private final CartRepository repository;
+    private final WarehouseClient warehouseClient;
 
     @Transactional
     @Override
     public CartDto addProduct(String username,
-                                           Map<UUID, Integer> products) throws NotAuthorizedUserException {
+                                           Map<UUID, Integer> products) throws NotAuthorizedUserException, ProductInShoppingCartLowQuantityInWarehouse {
         log.info("Request for add product from username: {} with products {}", username, products);
         log.debug("Request for add product from username: {} with products {}", username, products);
         checkCreateCart(username);
 
         Cart cart = repository.findByUsername(username);
+
         ArrayList<CartProduct> newProducts = new ArrayList<>();
 
         for (UUID uuid : products.keySet()) {
@@ -46,8 +49,12 @@ public class CardServiceImpl implements CartService {
             cart.getProducts().addAll(newProducts);
         }
 
+        checkProductsQuantity(toCartDto(cart));
+
         return toCartDto(repository.save(cart));
     }
+
+
 
     @Override
     public CartDto getCart(String username) throws NotAuthorizedUserException {
@@ -137,6 +144,11 @@ public class CardServiceImpl implements CartService {
                 throw new NoProductsInShoppingCartException("Товара нет в корзине");
             }
         }
+    }
+
+    //прочие методы
+    private void checkProductsQuantity(CartDto cartDto) throws ProductInShoppingCartLowQuantityInWarehouse {
+        warehouseClient.checkProducts(cartDto);
     }
 
 }

@@ -11,10 +11,10 @@ public class WarehouseMapper {
         return Product.builder()
                 .id(request.getProductId())
                 .fragile(request.getFragile())
-                .weight(request.getDimension().getWidth())
+                .weight(request.getWeight())
                 .height(request.getDimension().getHeight())
                 .depth(request.getDimension().getDepth())
-                .weight(request.getWeight())
+                .width(request.getDimension().getWidth())
                 .quantity(0L)
                 .build();
     }

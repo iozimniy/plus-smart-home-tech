@@ -46,6 +46,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     public BookedProductsDto checkProducts(CartDto cartDto) throws ProductInShoppingCartLowQuantityInWarehouse {
         log.info("Request for check products {}", cartDto);
         List<UUID> listId = cartDto.getProducts().keySet().stream().toList();
+        log.debug("Список UUID: {}", listId);
 //        Map<UUID, Product> products = repository.findAllById(listId)
 //                .stream().collect(Collectors.toMap(
 //                        s -> s.getId(),
@@ -53,6 +54,7 @@ public class WarehouseServiceImpl implements WarehouseService {
 //                ));
         
         List<Product> products = repository.findAllById(listId);
+        log.debug("Список продуктов: {}", products.stream().map(product -> product.getId()).toList());
 
         Double deliveryWeight = 0.0;
         Double deliveryVolume = 0.0;
