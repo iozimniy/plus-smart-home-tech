@@ -5,13 +5,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.cart.CartDto;
 import ru.yandex.practicum.common.clients.WarehouseClient;
+import ru.yandex.practicum.common.interfaces.WarehouseOperations;
 import ru.yandex.practicum.service.WarehouseService;
 import ru.yandex.practicum.warehouse.*;
 
 @RestController
 @RequestMapping("/api/v1/warehouse")
 @RequiredArgsConstructor
-public class WarehouseController implements WarehouseClient {
+public class WarehouseController implements WarehouseOperations {
     private final WarehouseService service;
 
     @PutMapping

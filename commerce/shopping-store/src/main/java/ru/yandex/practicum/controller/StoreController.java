@@ -5,6 +5,7 @@ import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.common.clients.StoreClient;
+import ru.yandex.practicum.common.interfaces.StoreOperations;
 import ru.yandex.practicum.products.ProductCategory;
 import ru.yandex.practicum.products.ProductDto;
 import ru.yandex.practicum.products.ProductNotFoundException;
@@ -16,7 +17,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/shopping-store")
 @RequiredArgsConstructor
-public class StoreController implements StoreClient {
+public class StoreController implements StoreOperations {
 
     private final StoreService service;
 
@@ -43,7 +44,7 @@ public class StoreController implements StoreClient {
         return service.deactivateProduct(productId);
     }
 
-    @PostMapping("quantityState")
+    @PostMapping("/quantityState")
     public Boolean updateQuantityState(@RequestParam UUID productId,
                                        @RequestParam QuantityState quantityState) throws ProductNotFoundException {
         return service.updateQuantityState(productId, quantityState);

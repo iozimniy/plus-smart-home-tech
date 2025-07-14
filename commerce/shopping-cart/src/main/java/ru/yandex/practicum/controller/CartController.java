@@ -9,6 +9,7 @@ import ru.yandex.practicum.cart.ChangeProductQuantityRequest;
 import ru.yandex.practicum.cart.NoProductsInShoppingCartException;
 import ru.yandex.practicum.cart.NotAuthorizedUserException;
 import ru.yandex.practicum.common.clients.CartClient;
+import ru.yandex.practicum.common.interfaces.CartOperations;
 import ru.yandex.practicum.service.CartService;
 import ru.yandex.practicum.warehouse.ProductInShoppingCartLowQuantityInWarehouse;
 
@@ -19,7 +20,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/shopping-cart")
 @RequiredArgsConstructor
-public class CartController implements CartClient {
+public class CartController implements CartOperations {
     private final CartService service;
 
     @PutMapping
