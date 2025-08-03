@@ -1,11 +1,9 @@
 package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.cart.CartDto;
-import ru.yandex.practicum.common.clients.WarehouseClient;
 import ru.yandex.practicum.common.interfaces.WarehouseOperations;
 import ru.yandex.practicum.service.WarehouseService;
 import ru.yandex.practicum.warehouse.*;

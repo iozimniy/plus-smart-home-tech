@@ -27,9 +27,6 @@ import static ru.yandex.practicum.mapper.DeliveryMapper.mapToDeliveryDto;
 @RequiredArgsConstructor
 public class DeliveryServiceImpl implements DeliveryService {
 
-    private final DeliveryRepository repository;
-    private final OrderClient orderClient;
-    private final WarehouseClient warehouseClient;
     private static final Double BASE_DELIVERY_COST = 5.0;
     private static final Integer ADDRESS_1_RATIO = 1;
     private static final Integer ADDRESS_2_RATIO = 2;
@@ -37,6 +34,9 @@ public class DeliveryServiceImpl implements DeliveryService {
     private static final Double WEIGHT_RATIO = 0.3;
     private static final Double VOLUME_RATIO = 0.2;
     private static final Double STREET_RATIO = 0.2;
+    private final DeliveryRepository repository;
+    private final OrderClient orderClient;
+    private final WarehouseClient warehouseClient;
 
     @Override
     @Transactional
@@ -44,7 +44,6 @@ public class DeliveryServiceImpl implements DeliveryService {
         log.info("Request for create delivery {}", deliveryDto);
 
         deliveryDto.setDeliveryState(DeliveryState.CREATED);
-
 
 
         Delivery delivery = repository.save(mapToDelivery(deliveryDto));
@@ -74,9 +73,9 @@ public class DeliveryServiceImpl implements DeliveryService {
                 );
 
         ShippedToDeliveryRequest shippedToDeliveryRequest = ShippedToDeliveryRequest.builder()
-                        .deliveryId(delivery.getId())
-                                .orderId(delivery.getOrderId())
-                                        .build();
+                .deliveryId(delivery.getId())
+                .orderId(delivery.getOrderId())
+                .build();
 
         warehouseClient.sentProducts(shippedToDeliveryRequest);
 
@@ -124,8 +123,8 @@ public class DeliveryServiceImpl implements DeliveryService {
         totalDeliveryCost = totalDeliveryCost + (orderDto.getDeliveryVolume() * VOLUME_RATIO);
 
         if (!warehouseAddress.getCountry().equals(delivery.getToAddress().getCountry()) &&
-        !warehouseAddress.getCity().equals(delivery.getToAddress().getCity()) &&
-        !warehouseAddress.getStreet().equals(delivery.getToAddress().getStreet())) {
+                !warehouseAddress.getCity().equals(delivery.getToAddress().getCity()) &&
+                !warehouseAddress.getStreet().equals(delivery.getToAddress().getStreet())) {
             totalDeliveryCost = totalDeliveryCost + (totalDeliveryCost * STREET_RATIO);
         }
 

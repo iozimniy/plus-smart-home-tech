@@ -70,7 +70,7 @@ public class OrderController {
     }
 
     @PostMapping("calculate/delivery")
-    public OrderDto calculateDelivery (@RequestBody UUID orderId)
+    public OrderDto calculateDelivery(@RequestBody UUID orderId)
             throws NoOrderFoundException, NoDeliveryFoundException {
         return service.calculateDelivery(orderId);
     }

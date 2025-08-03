@@ -1,13 +1,11 @@
 package ru.yandex.practicum.mapper;
 
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.cart.CartDto;
 import ru.yandex.practicum.model.Order;
 import ru.yandex.practicum.model.OrderProduct;
 import ru.yandex.practicum.order.CreateNewOrderRequest;
 import ru.yandex.practicum.order.OrderDto;
 import ru.yandex.practicum.order.OrderState;
-import ru.yandex.practicum.warehouse.BookedProductsDto;
 
 import java.util.ArrayList;
 import java.util.List;

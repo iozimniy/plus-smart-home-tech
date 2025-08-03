@@ -1,6 +1,5 @@
 package ru.yandex.practicum.common.interfaces;
 
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.cart.NotAuthorizedUserException;
 import ru.yandex.practicum.delivery.NoDeliveryFoundException;
@@ -44,7 +43,7 @@ public interface OrderOperations {
             throws NoOrderFoundException, NotEnoughInfoInOrderToCalculateException;
 
     @PostMapping("calculate/delivery")
-    OrderDto calculateDelivery (@RequestBody UUID orderId)
+    OrderDto calculateDelivery(@RequestBody UUID orderId)
             throws NoOrderFoundException, NoDeliveryFoundException;
 
     @PostMapping("/assembly")

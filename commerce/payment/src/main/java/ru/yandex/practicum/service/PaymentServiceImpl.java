@@ -2,7 +2,6 @@ package ru.yandex.practicum.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.common.clients.OrderClient;
@@ -17,7 +16,6 @@ import ru.yandex.practicum.products.ProductDto;
 import ru.yandex.practicum.products.ProductNotFoundException;
 import ru.yandex.practicum.repository.PaymentRepository;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -40,7 +38,7 @@ public class PaymentServiceImpl implements PaymentService {
         log.info("Request for create payment fron order {}", orderDto.getOrderId());
 
         if (orderDto.getDeliveryPrice() == null || orderDto.getTotalPrice() == null
-        || orderDto.getProductPrice() == null) {
+                || orderDto.getProductPrice() == null) {
             throw new NotEnoughInfoInOrderToCalculateException("Недостаточно информации в заказе для расчёта");
         }
 
