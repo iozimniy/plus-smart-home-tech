@@ -100,7 +100,7 @@ public class DeliveryServiceImpl implements DeliveryService {
 
     @Override
     public Double calculateDeliveryCost(OrderDto orderDto) throws NoDeliveryFoundException {
-        Double totalDeliveryCost = BASE_DELIVERY_COST;
+        double totalDeliveryCost = BASE_DELIVERY_COST;
 
         Delivery delivery = repository.findById(orderDto.getDeliveryId())
                 .orElseThrow(

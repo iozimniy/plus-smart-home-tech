@@ -49,7 +49,7 @@ public class WarehouseServiceImpl implements WarehouseService {
         log.debug("Список UUID: {}", listId);
 
         List<Product> products = warehouseRepository.findByIdIn(listId);
-        log.debug("Список продуктов: {}", products.stream().map(product -> product.getId()).toList());
+        log.debug("Список продуктов: {}", products.stream().map(Product::getId).toList());
 
         return assemblyInfo(cartDto.getProducts(), products);
     }
@@ -134,9 +134,9 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     private BookedProductsDto assemblyInfo(Map<UUID, Integer> productsForAssembly, List<Product> products) throws ProductInShoppingCartLowQuantityInWarehouse {
 
-        Double deliveryWeight = 0.0;
-        Double deliveryVolume = 0.0;
-        Boolean fragile = false;
+        double deliveryWeight = 0.0;
+        double deliveryVolume = 0.0;
+        boolean fragile = false;
 
         for (Product product : products) {
             if (product.getQuantity() < productsForAssembly.get(product.getId())) {

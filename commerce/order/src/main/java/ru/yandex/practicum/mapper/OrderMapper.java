@@ -37,8 +37,8 @@ public class OrderMapper {
 
     public static Map<UUID, Integer> toMapOrderProducts(List<OrderProduct> orderProducts) {
         return orderProducts.stream().collect(Collectors.toMap(
-                s -> s.getProductId(),
-                s -> s.getQuantity()
+                OrderProduct::getProductId,
+                OrderProduct::getQuantity
         ));
     }
 

@@ -86,7 +86,7 @@ public class PaymentServiceImpl implements PaymentService {
             throw new NotEnoughInfoInOrderToCalculateException("Недостаточно информации в заказе для расчёта");
         }
 
-        Double totalCost = 0.0;
+        double totalCost = 0.0;
 
         for (Map.Entry<UUID, Integer> uuidIntegerEntry : orderDto.getProducts().entrySet()) {
             ProductDto productDto = storeClient.getProductById(uuidIntegerEntry.getKey());

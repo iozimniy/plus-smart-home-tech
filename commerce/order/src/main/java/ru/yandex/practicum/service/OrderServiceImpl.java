@@ -10,6 +10,7 @@ import ru.yandex.practicum.common.clients.DeliveryClient;
 import ru.yandex.practicum.common.clients.PaymentClient;
 import ru.yandex.practicum.common.clients.WarehouseClient;
 import ru.yandex.practicum.delivery.NoDeliveryFoundException;
+import ru.yandex.practicum.mapper.OrderMapper;
 import ru.yandex.practicum.model.Order;
 import ru.yandex.practicum.model.OrderProduct;
 import ru.yandex.practicum.order.*;
@@ -40,7 +41,7 @@ public class OrderServiceImpl implements OrderService {
     public List<OrderDto> getOrders(String username) throws NotAuthorizedUserException {
         log.info("Request for receive orders with username {}", username);
         var cart = cartClient.getCart(username);
-        return repository.findByCartId(cart.getShoppingCartId()).stream().map(order -> mapToDto(order)).toList();
+        return repository.findByCartId(cart.getShoppingCartId()).stream().map(OrderMapper::mapToDto).toList();
     }
 
     //пока не дописан
