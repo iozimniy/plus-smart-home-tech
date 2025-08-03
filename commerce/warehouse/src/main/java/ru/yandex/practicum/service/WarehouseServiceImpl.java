@@ -144,7 +144,7 @@ public class WarehouseServiceImpl implements WarehouseService {
                         " не присутствует в требуемом количестве");
             }
 
-            Double volume = product.getWidth() * product.getHeight() * product.getDepth();
+            double volume = product.getWidth() * product.getHeight() * product.getDepth();
             deliveryVolume = deliveryVolume + volume;
             deliveryWeight = deliveryWeight + product.getWeight();
 
