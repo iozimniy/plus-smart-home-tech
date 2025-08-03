@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.cart.NotAuthorizedUserException;
 import ru.yandex.practicum.order.CreateNewOrderRequest;
+import ru.yandex.practicum.order.NoOrderFoundException;
 import ru.yandex.practicum.order.OrderDto;
 import ru.yandex.practicum.order.ProductReturnRequest;
 import ru.yandex.practicum.service.OrderService;
@@ -27,7 +28,8 @@ public class OrderController {
     }
 
     @PostMapping("/return")
-    public OrderDto returnProducts(@RequestBody ProductReturnRequest returnRequest) {
+    public OrderDto returnProducts(@RequestBody ProductReturnRequest returnRequest)
+            throws NoOrderFoundException {
         return service.returnProducts(returnRequest);
     }
 }
