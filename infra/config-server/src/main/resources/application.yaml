@@ -11,13 +11,15 @@ spring:
             - classpath:config/telemetry/{application}
             - classpath:config/commerce/{application}
             - classpath:config/infra/{application}
-  eureka:
-    client:
-      serviceUrl:
-        defaultZone: http://localhost:8761/eureka/
-    instance:
-      preferIpAddress: true
-      hostname: localhost
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
+    hostname: localhost
+    instance-id: "${spring.application.name}:${random.value}"
+    leaseRenewalIntervalInSeconds: 10
 
 server:
   port: 8888

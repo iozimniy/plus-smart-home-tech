@@ -2,14 +2,14 @@ package ru.yandex.practicum.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.yandex.practicum.model.Product;
+import ru.yandex.practicum.model.Order;
 
 import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface WarehouseRepository extends JpaRepository<Product, UUID> {
-    boolean existsById(UUID id);
+public interface OrderRepository extends JpaRepository<ru.yandex.practicum.model.Order, UUID> {
+    List<Order> findByCartId(UUID cartId);
 
-    List<Product> getAllById(List<UUID> uuids);
+    Boolean existById(UUID id);
 }

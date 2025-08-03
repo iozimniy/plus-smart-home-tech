@@ -14,8 +14,8 @@ spring:
         show_sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5433/sh_commerce_cart
-    username: user_cart
+    url: jdbc:postgresql://localhost:5436/sh_commerce_order
+    username: user_order
     password: 12345
 
 logging:
