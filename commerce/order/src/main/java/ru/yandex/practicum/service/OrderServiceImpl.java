@@ -6,10 +6,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.yandex.practicum.cart.NotAuthorizedUserException;
 import ru.yandex.practicum.common.clients.CartClient;
+import ru.yandex.practicum.common.clients.DeliveryClient;
+import ru.yandex.practicum.common.clients.PaymentClient;
 import ru.yandex.practicum.common.clients.WarehouseClient;
+import ru.yandex.practicum.delivery.NoDeliveryFoundException;
 import ru.yandex.practicum.model.Order;
 import ru.yandex.practicum.model.OrderProduct;
 import ru.yandex.practicum.order.*;
+import ru.yandex.practicum.payment.NotEnoughInfoInOrderToCalculateException;
 import ru.yandex.practicum.repository.OrderRepository;
 import ru.yandex.practicum.warehouse.AssemblyProductsForOrderRequest;
 import ru.yandex.practicum.warehouse.BookedProductsDto;
@@ -29,6 +33,8 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository repository;
     private final CartClient cartClient;
     private final WarehouseClient warehouseClient;
+    private final PaymentClient paymentClient;
+    private final DeliveryClient deliveryClient;
 
     @Override
     public List<OrderDto> getOrders(String username) throws NotAuthorizedUserException {
@@ -59,7 +65,6 @@ public class OrderServiceImpl implements OrderService {
         order.setDeliveryWeight(orderInfo.getDeliveryWeight());
         order.setDeliveryVolume(orderInfo.getDeliveryVolume());
         order.setFragile(orderInfo.getFragile());
-        order.setState(OrderState.ASSEMBLED);
 
         repository.save(order);
 
@@ -69,6 +74,8 @@ public class OrderServiceImpl implements OrderService {
     @Override
     @Transactional
     public OrderDto returnProducts(ProductReturnRequest returnRequest) throws NoOrderFoundException {
+        log.info("Request for return products {}", returnRequest);
+
         if (!repository.existById(returnRequest.getOrderId())) {
             throw new NoOrderFoundException("Заказ для возврата не найден");
         }
@@ -85,7 +92,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto payment(UUID orderId) throws NoOrderFoundException {
+        log.info("Request for success payment of order {}", orderId);
+
         Order order = repository.findById(orderId).orElseThrow(
                 () -> new NoOrderFoundException("Не найден заказ")
         );
@@ -95,5 +105,128 @@ public class OrderServiceImpl implements OrderService {
 
         return mapToDto(order);
     }
+
+    @Override
+    @Transactional
+    public OrderDto failedPayment(UUID orderId) throws NoOrderFoundException {
+        log.info("Request for failed payment of order {}", orderId);
+
+        Order order = repository.findById(orderId).orElseThrow(
+                () -> new NoOrderFoundException("Не найден заказ")
+        );
+
+        order.setState(OrderState.PAYMENT_FAILED);
+        repository.save(order);
+
+        return mapToDto(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderDto delivery(UUID orderId) throws NoOrderFoundException {
+        log.info("Request for success delivery of order {}", orderId);
+
+        Order order = repository.findById(orderId).orElseThrow(
+                () -> new NoOrderFoundException("Не найден заказ")
+        );
+
+        order.setState(OrderState.DELIVERED);
+        repository.save(order);
+
+        return mapToDto(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderDto failDelivery(UUID orderId) throws NoOrderFoundException {
+        log.info("Request for delivery of order {}", orderId);
+
+        Order order = repository.findById(orderId).orElseThrow(
+                () -> new NoOrderFoundException("Не найден заказ")
+        );
+
+        order.setState(OrderState.DELIVERY_FAILED);
+        repository.save(order);
+
+        return mapToDto(order);
+    }
+
+    @Override
+    public OrderDto complete(UUID orderId) throws NoOrderFoundException {
+        log.info("Request for complete order {}", orderId);
+
+        Order order = repository.findById(orderId).orElseThrow(
+                () -> new NoOrderFoundException("Не найден заказ")
+        );
+
+        order.setState(OrderState.COMPLETED);
+        repository.save(order);
+
+        return mapToDto(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderDto calculateTotal(UUID orderId) throws NoOrderFoundException,
+            NotEnoughInfoInOrderToCalculateException {
+        log.info("Request for calculate total cost for order {}", orderId);
+
+        Order order = repository.findById(orderId).orElseThrow(
+                () -> new NoOrderFoundException("Не найден заказ")
+        );
+
+        Double total = paymentClient.calculateTotalCost(mapToDto(order));
+        order.setTotalPrice(total);
+        order.setState(OrderState.ON_PAYMENT);
+
+        repository.save(order);
+        return mapToDto(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderDto calculateDelivery(UUID orderId) throws NoOrderFoundException, NoDeliveryFoundException {
+        log.info("Request for calculate delivery for order {}", orderId);
+
+        Order order = repository.findById(orderId).orElseThrow(
+                () -> new NoOrderFoundException("Не найден заказ")
+        );
+
+        Double deliveryCost = deliveryClient.calculateDeliveryCost(mapToDto(order));
+        order.setDeliveryPrice(deliveryCost);
+        repository.save(order);
+
+        return mapToDto(order);
+    }
+
+    @Override
+    @Transactional
+    public OrderDto assembly(UUID orderId) throws NoOrderFoundException {
+        log.info("Request for assembly for order {}", orderId);
+
+        Order order = repository.findById(orderId).orElseThrow(
+                () -> new NoOrderFoundException("Не найден заказ")
+        );
+
+        order.setState(OrderState.ASSEMBLED);
+        repository.save(order);
+
+        return mapToDto(order);
+    }
+
+    @Override
+    public OrderDto failAssembly(UUID orderId) throws NoOrderFoundException {
+        log.info("Request for fail assembly of order {}", orderId);
+
+        Order order = repository.findById(orderId).orElseThrow(
+                () -> new NoOrderFoundException("Не найден заказ")
+        );
+
+        order.setState(OrderState.ASSEMBLY_FAILED);
+        repository.save(order);
+
+        return mapToDto(order);
+    }
+
 
 }

@@ -10,6 +10,7 @@ import ru.yandex.practicum.order.NoOrderFoundException;
 import ru.yandex.practicum.order.OrderDto;
 import ru.yandex.practicum.payment.NotEnoughInfoInOrderToCalculateException;
 import ru.yandex.practicum.payment.PaymentDto;
+import ru.yandex.practicum.products.ProductNotFoundException;
 import ru.yandex.practicum.service.PaymentService;
 
 import java.util.UUID;
@@ -38,7 +39,14 @@ public class PaymentController {
     }
 
     @PostMapping("/productCost")
-    public Double calculateProductsCost(OrderDto orderDto) {
+    public Double calculateProductsCost(OrderDto orderDto)
+            throws ProductNotFoundException, NotEnoughInfoInOrderToCalculateException {
         return service.calculateProductsCost(orderDto);
+    }
+
+    @PostMapping("/failed")
+    public ResponseEntity<Void> failed(@RequestBody UUID paymentId) throws NoOrderFoundException {
+        service.refusePayment(paymentId);
+        return ResponseEntity.ok().build();
     }
 }
