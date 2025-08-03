@@ -81,7 +81,7 @@ public class OrderController {
     }
 
     @PostMapping("/assembly/failed")
-    private OrderDto failAssembly(@RequestBody UUID orderId) {
+    private OrderDto failAssembly(@RequestBody UUID orderId) throws NoOrderFoundException {
         return service.failAssembly(orderId);
     }
 }

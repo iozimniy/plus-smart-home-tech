@@ -49,4 +49,7 @@ public interface OrderOperations {
 
     @PostMapping("/assembly")
     OrderDto assembly(@RequestBody UUID orderId) throws NoOrderFoundException;
+
+    @PostMapping("/assembly/failed")
+    OrderDto failAssembly(@RequestBody UUID orderId) throws NoOrderFoundException;
 }
