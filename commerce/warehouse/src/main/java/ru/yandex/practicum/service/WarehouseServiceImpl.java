@@ -48,35 +48,10 @@ public class WarehouseServiceImpl implements WarehouseService {
         List<UUID> listId = cartDto.getProducts().keySet().stream().toList();
         log.debug("Список UUID: {}", listId);
 
-        List<Product> products = warehouseRepository.findAllById(listId);
+        List<Product> products = warehouseRepository.findByIdIn(listId);
         log.debug("Список продуктов: {}", products.stream().map(product -> product.getId()).toList());
 
         return assemblyInfo(cartDto.getProducts(), products);
-
-//        Double deliveryWeight = 0.0;
-//        Double deliveryVolume = 0.0;
-//        Boolean fragile = false;
-//
-//        for (Product product : products) {
-//            if (product.getQuantity() < cartDto.getProducts().get(product.getId())) {
-//                throw new ProductInShoppingCartLowQuantityInWarehouse("Товар c id" + product.getId() +
-//                        " не присутствует в требуемом количестве");
-//            }
-//
-//            Double volume = product.getWidth() * product.getHeight() * product.getDepth();
-//            deliveryVolume = deliveryVolume + volume;
-//            deliveryWeight = deliveryWeight + product.getWeight();
-//
-//            if (!fragile && product.getFragile()) {
-//                fragile = true;
-//            }
-//        }
-//
-//        return BookedProductsDto.builder()
-//                .deliveryVolume(deliveryVolume)
-//                .deliveryWeight(deliveryWeight)
-//                .fragile(fragile)
-//                .build();
     }
 
     @Override
@@ -108,13 +83,17 @@ public class WarehouseServiceImpl implements WarehouseService {
 
     @Override
     public void sentProducts(ShippedToDeliveryRequest shippedToDeliveryRequest) {
-        // TODO: реализация после сервиса доставки
+        OrderBooking orderBooking = orderBookingRepository.findByOrderId(shippedToDeliveryRequest.getOrderId()).get();
+        orderBooking.setDeliveryId(shippedToDeliveryRequest.getDeliveryId());
+
+        orderBookingRepository.save(orderBooking);
+
     }
 
     @Override
     public void returnProducts(Map<UUID, Integer> returnProducts) {
         log.info("Request for return products {}", returnProducts);
-        List<Product> products = warehouseRepository.getAllById(returnProducts.keySet().stream().toList());
+        List<Product> products = warehouseRepository.findByIdIn(returnProducts.keySet().stream().toList());
         ArrayList<Product> updateProducts = new ArrayList<>();
 
         for (Product product : products) {
@@ -129,7 +108,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     public BookedProductsDto assembly(AssemblyProductsForOrderRequest assemblyProductsForOrderRequest)
             throws ProductInShoppingCartLowQuantityInWarehouse {
         List<UUID> listId = assemblyProductsForOrderRequest.getProducts().keySet().stream().toList();
-        List<Product> products = warehouseRepository.findAllById(listId);
+        List<Product> products = warehouseRepository.findByIdIn(listId);
 
         BookedProductsDto bookedProductsDto = assemblyInfo(assemblyProductsForOrderRequest.getProducts(), products);
 

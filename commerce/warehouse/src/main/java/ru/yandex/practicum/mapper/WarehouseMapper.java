@@ -15,7 +15,7 @@ public class WarehouseMapper {
                 .height(request.getDimension().getHeight())
                 .depth(request.getDimension().getDepth())
                 .width(request.getDimension().getWidth())
-                .quantity(0L)
+                .quantity(0)
                 .build();
     }
 }

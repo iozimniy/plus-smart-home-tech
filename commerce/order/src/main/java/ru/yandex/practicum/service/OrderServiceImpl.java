@@ -76,13 +76,11 @@ public class OrderServiceImpl implements OrderService {
     public OrderDto returnProducts(ProductReturnRequest returnRequest) throws NoOrderFoundException {
         log.info("Request for return products {}", returnRequest);
 
-        if (!repository.existById(returnRequest.getOrderId())) {
+        if (!repository.existsById(returnRequest.getOrderId())) {
             throw new NoOrderFoundException("Заказ для возврата не найден");
         }
 
         warehouseClient.returnProducts(returnRequest.getProducts());
-
-        //TODO: разобраться, когда менять статус заказа на возврат продуктов
 
         Order order = repository.findById(returnRequest.getOrderId()).get();
         order.setState(OrderState.PRODUCT_RETURNED);

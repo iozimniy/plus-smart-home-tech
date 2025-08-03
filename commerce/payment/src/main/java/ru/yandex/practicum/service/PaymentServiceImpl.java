@@ -37,7 +37,6 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     @Transactional
     public PaymentDto pay(OrderDto orderDto) throws NotEnoughInfoInOrderToCalculateException {
-        //TODO: после реализации остальных методов проверить корректность расчётов
         log.info("Request for create payment fron order {}", orderDto.getOrderId());
 
         if (orderDto.getDeliveryPrice() == null || orderDto.getTotalPrice() == null

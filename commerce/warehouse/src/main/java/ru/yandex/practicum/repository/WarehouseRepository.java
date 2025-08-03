@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface WarehouseRepository extends JpaRepository<Product, UUID> {
     boolean existsById(UUID id);
 
-    List<Product> getAllById(List<UUID> uuids);
+    List<Product> findByIdIn(List<UUID> uuids);
 }

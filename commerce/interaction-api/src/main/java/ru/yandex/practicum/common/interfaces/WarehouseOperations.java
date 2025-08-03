@@ -28,4 +28,7 @@ public interface WarehouseOperations {
     @PostMapping("/assembly")
     BookedProductsDto assembly(@RequestBody AssemblyProductsForOrderRequest assemblyProductsForOrderRequest)
             throws ProductInShoppingCartLowQuantityInWarehouse;
+
+    @PostMapping("/shipped")
+    ResponseEntity<Void> sentProducts(@RequestBody ShippedToDeliveryRequest shippedToDeliveryRequest);
 }

@@ -14,6 +14,7 @@ import ru.yandex.practicum.order.NoOrderFoundException;
 import ru.yandex.practicum.order.OrderDto;
 import ru.yandex.practicum.repository.DeliveryRepository;
 import ru.yandex.practicum.warehouse.AddressDto;
+import ru.yandex.practicum.warehouse.ShippedToDeliveryRequest;
 
 import java.util.UUID;
 
@@ -43,6 +44,9 @@ public class DeliveryServiceImpl implements DeliveryService {
         log.info("Request for create delivery {}", deliveryDto);
 
         deliveryDto.setDeliveryState(DeliveryState.CREATED);
+
+
+
         Delivery delivery = repository.save(mapToDelivery(deliveryDto));
 
         return mapToDeliveryDto(delivery);
@@ -68,6 +72,13 @@ public class DeliveryServiceImpl implements DeliveryService {
                 .orElseThrow(
                         () -> new NoDeliveryFoundException("Доставка не найдена")
                 );
+
+        ShippedToDeliveryRequest shippedToDeliveryRequest = ShippedToDeliveryRequest.builder()
+                        .deliveryId(delivery.getId())
+                                .orderId(delivery.getOrderId())
+                                        .build();
+
+        warehouseClient.sentProducts(shippedToDeliveryRequest);
 
         delivery.setState(DeliveryState.IN_PROGRESS);
         repository.save(delivery);

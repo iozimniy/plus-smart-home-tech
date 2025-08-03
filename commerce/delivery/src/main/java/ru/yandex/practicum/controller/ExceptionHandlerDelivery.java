@@ -29,8 +29,8 @@ public class ExceptionHandlerDelivery {
     }
 
     @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoDeliveryFoundException.class)
-    public ErrorResponse handleMethodNoOrderFoundException(NoDeliveryFoundException e) {
+    @ExceptionHandler(NoOrderFoundException.class)
+    public ErrorResponse handleMethodNoOrderFoundException(NoOrderFoundException e) {
         log.info("Send NoOrderFoundException with message {}", e.getMessage());
         return ErrorResponse.builder()
                 .cause(e.getCause())

@@ -11,5 +11,5 @@ import java.util.UUID;
 public interface OrderRepository extends JpaRepository<ru.yandex.practicum.model.Order, UUID> {
     List<Order> findByCartId(UUID cartId);
 
-    Boolean existById(UUID id);
+    boolean existsById(UUID id);
 }
