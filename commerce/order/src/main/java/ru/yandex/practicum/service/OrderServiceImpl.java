@@ -16,6 +16,7 @@ import ru.yandex.practicum.warehouse.BookedProductsDto;
 import ru.yandex.practicum.warehouse.ProductInShoppingCartLowQuantityInWarehouse;
 
 import java.util.List;
+import java.util.UUID;
 
 import static ru.yandex.practicum.mapper.OrderMapper.*;
 
@@ -39,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
     //пока не дописан
     @Override
     @Transactional
-    public OrderDto create(CreateNewOrderRequest newOrder) {
+    public OrderDto create(CreateNewOrderRequest newOrder) throws ProductInShoppingCartLowQuantityInWarehouse {
         log.info("Request for create new order {}", newOrder);
 
         Order order = repository.save(toOrder(newOrder));
@@ -47,18 +48,18 @@ public class OrderServiceImpl implements OrderService {
 
         order.setProducts(orderProducts);
 
-        //TODO: понять, когда будет бронирование
-//        AssemblyProductsForOrderRequest assemblyProductsForOrderRequest =
-//                AssemblyProductsForOrderRequest.builder()
-//                        .orderId(order.getId())
-//                        .products(newOrder.getShoppingCart().getProducts())
-//                        .build();
-//
-//        BookedProductsDto orderInfo = warehouseClient.assembly(assemblyProductsForOrderRequest);
-//
-//        order.setDeliveryWeight(orderInfo.getDeliveryWeight());
-//        order.setDeliveryVolume(orderInfo.getDeliveryVolume());
-//        order.setFragile(orderInfo.getFragile());
+        AssemblyProductsForOrderRequest assemblyProductsForOrderRequest =
+                AssemblyProductsForOrderRequest.builder()
+                        .orderId(order.getId())
+                        .products(newOrder.getShoppingCart().getProducts())
+                        .build();
+
+        BookedProductsDto orderInfo = warehouseClient.assembly(assemblyProductsForOrderRequest);
+
+        order.setDeliveryWeight(orderInfo.getDeliveryWeight());
+        order.setDeliveryVolume(orderInfo.getDeliveryVolume());
+        order.setFragile(orderInfo.getFragile());
+        order.setState(OrderState.ASSEMBLED);
 
         repository.save(order);
 
@@ -66,6 +67,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto returnProducts(ProductReturnRequest returnRequest) throws NoOrderFoundException {
         if (!repository.existById(returnRequest.getOrderId())) {
             throw new NoOrderFoundException("Заказ для возврата не найден");
@@ -77,6 +79,18 @@ public class OrderServiceImpl implements OrderService {
 
         Order order = repository.findById(returnRequest.getOrderId()).get();
         order.setState(OrderState.PRODUCT_RETURNED);
+        repository.save(order);
+
+        return mapToDto(order);
+    }
+
+    @Override
+    public OrderDto payment(UUID orderId) throws NoOrderFoundException {
+        Order order = repository.findById(orderId).orElseThrow(
+                () -> new NoOrderFoundException("Не найден заказ")
+        );
+
+        order.setState(OrderState.PAID);
         repository.save(order);
 
         return mapToDto(order);

@@ -9,11 +9,14 @@ import ru.yandex.practicum.order.ProductReturnRequest;
 import ru.yandex.practicum.warehouse.ProductInShoppingCartLowQuantityInWarehouse;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface OrderService {
     List<OrderDto> getOrders(String username) throws NotAuthorizedUserException;
 
-    OrderDto create(CreateNewOrderRequest newOrder);
+    OrderDto create(CreateNewOrderRequest newOrder) throws ProductInShoppingCartLowQuantityInWarehouse;
 
     OrderDto returnProducts(ProductReturnRequest returnRequest) throws NoOrderFoundException;
+
+    OrderDto payment(UUID orderId) throws NoOrderFoundException;
 }
