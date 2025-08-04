@@ -1,12 +1,10 @@
 package ru.yandex.practicum.mapper;
 
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.delivery.DeliveryDto;
 import ru.yandex.practicum.model.Address;
 import ru.yandex.practicum.model.Delivery;
 import ru.yandex.practicum.warehouse.AddressDto;
 
-@Component
 public class DeliveryMapper {
 
     public static Delivery mapToDelivery(DeliveryDto deliveryDto) {

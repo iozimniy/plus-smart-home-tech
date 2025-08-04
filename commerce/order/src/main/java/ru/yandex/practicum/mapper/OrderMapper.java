@@ -1,6 +1,5 @@
 package ru.yandex.practicum.mapper;
 
-import org.springframework.stereotype.Component;
 import ru.yandex.practicum.model.Order;
 import ru.yandex.practicum.model.OrderProduct;
 import ru.yandex.practicum.order.CreateNewOrderRequest;
@@ -13,7 +12,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-@Component
 public class OrderMapper {
 
     public static OrderDto mapToDto(Order order) {
