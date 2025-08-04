@@ -97,6 +97,7 @@ public class PaymentServiceImpl implements PaymentService {
     }
 
     @Override
+    @Transactional
     public void refusePayment(UUID paymentId) throws NoOrderFoundException {
         log.info("Request for emulate refuse payment {}", paymentId);
 

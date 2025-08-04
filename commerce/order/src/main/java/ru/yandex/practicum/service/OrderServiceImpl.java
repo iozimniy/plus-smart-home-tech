@@ -151,6 +151,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto complete(UUID orderId) throws NoOrderFoundException {
         log.info("Request for complete order {}", orderId);
 
@@ -214,6 +215,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    @Transactional
     public OrderDto failAssembly(UUID orderId) throws NoOrderFoundException {
         log.info("Request for fail assembly of order {}", orderId);
 

@@ -52,6 +52,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    @Transactional
     public void successfulDelivery(UUID deliveryId) throws NoDeliveryFoundException, NoOrderFoundException {
         Delivery delivery = repository.findById(deliveryId)
                 .orElseThrow(
@@ -66,6 +67,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    @Transactional
     public void productsPicked(UUID deliveryId) throws NoDeliveryFoundException, NoOrderFoundException {
         Delivery delivery = repository.findById(deliveryId)
                 .orElseThrow(
@@ -86,6 +88,7 @@ public class DeliveryServiceImpl implements DeliveryService {
     }
 
     @Override
+    @Transactional
     public void failDelivery(UUID deliveryId) throws NoDeliveryFoundException, NoOrderFoundException {
         Delivery delivery = repository.findById(deliveryId)
                 .orElseThrow(

@@ -82,6 +82,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    @Transactional
     public void sentProducts(ShippedToDeliveryRequest shippedToDeliveryRequest) {
         OrderBooking orderBooking = orderBookingRepository.findByOrderId(shippedToDeliveryRequest.getOrderId()).get();
         orderBooking.setDeliveryId(shippedToDeliveryRequest.getDeliveryId());
@@ -91,6 +92,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    @Transactional
     public void returnProducts(Map<UUID, Integer> returnProducts) {
         log.info("Request for return products {}", returnProducts);
         List<Product> products = warehouseRepository.findByIdIn(returnProducts.keySet().stream().toList());
@@ -105,6 +107,7 @@ public class WarehouseServiceImpl implements WarehouseService {
     }
 
     @Override
+    @Transactional
     public BookedProductsDto assembly(AssemblyProductsForOrderRequest assemblyProductsForOrderRequest)
             throws ProductInShoppingCartLowQuantityInWarehouse {
         List<UUID> listId = assemblyProductsForOrderRequest.getProducts().keySet().stream().toList();
