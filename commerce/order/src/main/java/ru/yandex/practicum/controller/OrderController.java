@@ -3,6 +3,7 @@ package ru.yandex.practicum.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.cart.NotAuthorizedUserException;
+import ru.yandex.practicum.common.interfaces.OrderOperations;
 import ru.yandex.practicum.delivery.NoDeliveryFoundException;
 import ru.yandex.practicum.order.CreateNewOrderRequest;
 import ru.yandex.practicum.order.NoOrderFoundException;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/order")
 @RequiredArgsConstructor
-public class OrderController {
+public class OrderController implements OrderOperations {
     private final OrderService service;
 
     @GetMapping
@@ -81,7 +82,7 @@ public class OrderController {
     }
 
     @PostMapping("/assembly/failed")
-    private OrderDto failAssembly(@RequestBody UUID orderId) throws NoOrderFoundException {
+    public OrderDto failAssembly(@RequestBody UUID orderId) throws NoOrderFoundException {
         return service.failAssembly(orderId);
     }
 }

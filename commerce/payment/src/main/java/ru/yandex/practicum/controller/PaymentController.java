@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import ru.yandex.practicum.common.interfaces.PaymentOperations;
 import ru.yandex.practicum.order.NoOrderFoundException;
 import ru.yandex.practicum.order.OrderDto;
 import ru.yandex.practicum.payment.NotEnoughInfoInOrderToCalculateException;
@@ -18,7 +19,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/api/v1/payment")
 @RequiredArgsConstructor
-public class PaymentController {
+public class PaymentController implements PaymentOperations {
 
     private final PaymentService service;
 

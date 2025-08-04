@@ -8,6 +8,7 @@ import ru.yandex.practicum.order.NoOrderFoundException;
 import ru.yandex.practicum.order.OrderDto;
 import ru.yandex.practicum.order.ProductReturnRequest;
 import ru.yandex.practicum.payment.NotEnoughInfoInOrderToCalculateException;
+import ru.yandex.practicum.warehouse.ProductInShoppingCartLowQuantityInWarehouse;
 
 import java.util.List;
 import java.util.UUID;
@@ -18,10 +19,11 @@ public interface OrderOperations {
     List<OrderDto> getOrders(@RequestParam String username) throws NotAuthorizedUserException;
 
     @PutMapping
-    OrderDto createOrder(@RequestBody CreateNewOrderRequest newOrder);
+    OrderDto createOrder(@RequestBody CreateNewOrderRequest newOrder)
+            throws ProductInShoppingCartLowQuantityInWarehouse;
 
     @PostMapping("/return")
-    OrderDto returnProducts(@RequestBody ProductReturnRequest returnRequest);
+    OrderDto returnProducts(@RequestBody ProductReturnRequest returnRequest) throws NoOrderFoundException;
 
     @PostMapping("/payment")
     OrderDto payment(UUID orderId) throws NoOrderFoundException;
