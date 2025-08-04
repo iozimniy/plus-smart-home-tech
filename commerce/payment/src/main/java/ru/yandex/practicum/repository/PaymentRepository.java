@@ -1,13 +1,10 @@
 package ru.yandex.practicum.repository;
 
-import lombok.NonNull;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import org.springframework.data.repository.CrudRepository;
 import ru.yandex.practicum.model.Payment;
 
 import java.util.UUID;
 
-@Repository
-public interface PaymentRepository extends JpaRepository<Payment, UUID> {
-    boolean existsById(@NonNull UUID id);
+public interface PaymentRepository extends CrudRepository<Payment, UUID> {
+
 }
