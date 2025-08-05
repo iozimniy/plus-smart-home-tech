@@ -22,5 +22,5 @@ public class Product {
     private Double height;
     private Double depth;
     private Double weight;
-    private Long quantity;
+    private Integer quantity;
 }

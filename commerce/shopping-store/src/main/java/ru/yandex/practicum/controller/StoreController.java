@@ -1,10 +1,8 @@
 package ru.yandex.practicum.controller;
 
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.common.clients.StoreClient;
 import ru.yandex.practicum.common.interfaces.StoreOperations;
 import ru.yandex.practicum.products.ProductCategory;
 import ru.yandex.practicum.products.ProductDto;

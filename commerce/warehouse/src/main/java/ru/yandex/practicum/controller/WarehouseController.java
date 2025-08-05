@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.cart.CartDto;
-import ru.yandex.practicum.common.clients.WarehouseClient;
 import ru.yandex.practicum.common.interfaces.WarehouseOperations;
 import ru.yandex.practicum.service.WarehouseService;
 import ru.yandex.practicum.warehouse.*;
+
+import java.util.Map;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/v1/warehouse")
@@ -38,5 +40,23 @@ public class WarehouseController implements WarehouseOperations {
     @GetMapping("/address")
     public AddressDto getAddress() {
         return service.getAddress();
+    }
+
+    @PostMapping("/shipped")
+    public ResponseEntity<Void> sentProducts(@RequestBody ShippedToDeliveryRequest shippedToDeliveryRequest) {
+        service.sentProducts(shippedToDeliveryRequest);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/return")
+    public ResponseEntity<Void> returnProducts(Map<UUID, Integer> returnProducts) {
+        service.returnProducts(returnProducts);
+        return ResponseEntity.ok().build();
+    }
+
+    @PostMapping("/assembly")
+    public BookedProductsDto assembly(@RequestBody AssemblyProductsForOrderRequest assemblyProductsForOrderRequest)
+            throws ProductInShoppingCartLowQuantityInWarehouse {
+        return service.assembly(assemblyProductsForOrderRequest);
     }
 }
